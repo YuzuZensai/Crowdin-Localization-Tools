@@ -2,13 +2,13 @@
 // @name         Crowdin Localization Tools
 // @namespace    https://yuzu.kirameki.cafe/
 // @version      1.0.0
-// @description  A tool for translating Crowdin projects
+// @description  A tool for translating Crowdin projects using a CSV file
 // @author       Yuzu (YuzuZensai)
 // @match        https://crowdin.com/editor/*
 // @grant        GM_addStyle
 // @grant        GM_xmlhttpRequest
-// @updateURL    https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.js
-// @downloadURL  https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.js
+// @updateURL    https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.user.js
+// @downloadURL  https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.user.js
 // ==/UserScript==
 
 // Global configuration
@@ -28,8 +28,8 @@ const CONFIG = {
 
   // Remote CSV
   remoteCSVUrl: 'https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/data/data.csv',
-  allowLocalOverride: true, // Allow local file override
-  allowUrlOverride: true, // Allow custom URL override
+  allowLocalOverride: true,
+  allowUrlOverride: true,
 
   // Crowdin editor
   textboxSelector: '.editor-panel__editor-container textarea',
@@ -48,10 +48,10 @@ const CONFIG = {
 
 function log(type, message, data = null) {
   if (!CONFIG.debug) return;
-  
+
   const timestamp = new Date().toLocaleTimeString();
   const prefix = `[Crowdin Localization Tools][${timestamp}]`;
-  
+
   switch (type.toLowerCase()) {
     case 'info':
       console.log(`${prefix} ℹ️ ${message}`, data || '');
@@ -84,13 +84,13 @@ function levenshteinDistance(a, b) {
 
   for (let i = 1; i <= b.length; i++) {
     for (let j = 1; j <= a.length; j++) {
-      if (b.charAt(i-1) === a.charAt(j-1)) {
-        matrix[i][j] = matrix[i-1][j-1];
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
       } else {
         matrix[i][j] = Math.min(
-          matrix[i-1][j-1] + 1, // substitution
-          matrix[i][j-1] + 1,   // insertion
-          matrix[i-1][j] + 1    // deletion
+          matrix[i - 1][j - 1] + 1, // substitution
+          matrix[i][j - 1] + 1,   // insertion
+          matrix[i - 1][j] + 1    // deletion
         );
       }
     }
@@ -132,7 +132,7 @@ function TranslatorTool() {
     if (!sourceToggle || !sourceToggle.checked) {
       fetchRemoteCSV(CONFIG.remoteCSVUrl);
     }
-    
+
     log('success', 'Crowdin Localization Tools version ' + CONFIG.metadata.version + ' by ' + CONFIG.metadata.authorGithub + ' initialized successfully');
   }
 
@@ -182,7 +182,7 @@ function TranslatorTool() {
     closeButton.style.color = '#666';
     closeButton.style.padding = '0 4px';
     closeButton.style.lineHeight = '1';
-    closeButton.addEventListener('click', function() {
+    closeButton.addEventListener('click', function () {
       log('info', 'Close button clicked');
       toggleVisibility();
     });
@@ -243,7 +243,7 @@ function TranslatorTool() {
     tab.style.fontWeight = '500';
     tab.style.transition = 'all 0.2s ease';
 
-    tab.addEventListener('click', function() {
+    tab.addEventListener('click', function () {
       switchTab(text.toLowerCase());
     });
 
@@ -281,21 +281,21 @@ function TranslatorTool() {
     searchInput.style.backgroundColor = '#f8f9fa';
     searchInput.style.outline = 'none';
 
-    searchInput.addEventListener('mouseover', function() {
+    searchInput.addEventListener('mouseover', function () {
       if (document.activeElement !== this) {
         this.style.borderColor = '#ccc';
       }
     });
-    searchInput.addEventListener('mouseout', function() {
+    searchInput.addEventListener('mouseout', function () {
       if (document.activeElement !== this) {
         this.style.borderColor = '#e0e0e0';
       }
     });
-    searchInput.addEventListener('focus', function() {
+    searchInput.addEventListener('focus', function () {
       this.style.borderColor = '#1a73e8';
       this.style.backgroundColor = '#fff';
     });
-    searchInput.addEventListener('blur', function() {
+    searchInput.addEventListener('blur', function () {
       this.style.borderColor = '#e0e0e0';
       this.style.backgroundColor = '#f8f9fa';
     });
@@ -403,7 +403,7 @@ function TranslatorTool() {
     localFileInput.style.width = '100%';
     localFileInput.style.fontSize = '14px';
 
-    localFileInput.addEventListener('change', function() {
+    localFileInput.addEventListener('change', function () {
       if (this.files.length > 0) {
         readCSVFile(this.files[0]);
       }
@@ -412,7 +412,7 @@ function TranslatorTool() {
     fileContainer.appendChild(fileLabel);
     fileContainer.appendChild(localFileInput);
 
-    sourceToggle.addEventListener('change', function() {
+    sourceToggle.addEventListener('change', function () {
       urlContainer.style.display = this.checked ? 'none' : 'block';
       fileContainer.style.display = this.checked ? 'block' : 'none';
 
@@ -448,7 +448,7 @@ function TranslatorTool() {
     refreshButton.textContent = 'Refresh Data';
     refreshButton.className = 'csv-translator-refresh-btn';
 
-    refreshButton.addEventListener('click', function() {
+    refreshButton.addEventListener('click', function () {
       refreshTranslationData();
     });
 
@@ -482,7 +482,7 @@ function TranslatorTool() {
     authorLink.style.textDecoration = 'none';
     authorLink.style.cursor = 'pointer';
     authorLink.target = '_blank';
-    
+
     credits.appendChild(document.createTextNode('Made with 💖 by '));
     credits.appendChild(authorLink);
     credits.appendChild(document.createTextNode(` • v${CONFIG.metadata.version}`));
@@ -493,7 +493,7 @@ function TranslatorTool() {
     updateLink.style.color = '#1a73e8';
     updateLink.style.textDecoration = 'none';
     updateLink.style.cursor = 'pointer';
-    updateLink.addEventListener('click', function(e) {
+    updateLink.addEventListener('click', function (e) {
       e.preventDefault();
       checkForUpdates();
     });
@@ -529,7 +529,7 @@ function TranslatorTool() {
   }
 
   function setupDraggable(element) {
-    element.addEventListener('mousedown', function(e) {
+    element.addEventListener('mousedown', function (e) {
       isDragging = true;
       var rect = container.getBoundingClientRect();
       dragOffsetX = e.clientX - rect.left;
@@ -538,7 +538,7 @@ function TranslatorTool() {
       log('info', 'Started dragging window');
     });
 
-    document.addEventListener('mousemove', function(e) {
+    document.addEventListener('mousemove', function (e) {
       if (isDragging) {
         var x = e.clientX - dragOffsetX;
         var y = e.clientY - dragOffsetY;
@@ -549,7 +549,7 @@ function TranslatorTool() {
       }
     });
 
-    document.addEventListener('mouseup', function() {
+    document.addEventListener('mouseup', function () {
       if (isDragging) {
         isDragging = false;
         log('info', 'Stopped dragging window');
@@ -579,7 +579,7 @@ function TranslatorTool() {
     toggleButton.style.zIndex = '10000';
     toggleButton.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
 
-    toggleButton.addEventListener('click', function() {
+    toggleButton.addEventListener('click', function () {
       log('info', 'Toggle button clicked');
       toggleVisibility();
     });
@@ -602,7 +602,7 @@ function TranslatorTool() {
 
   function setupEventListeners() {
     log('info', 'Setting up event listeners');
-    searchInput.addEventListener('input', function() {
+    searchInput.addEventListener('input', function () {
       log('info', 'Search input detected');
       searchTranslations();
     });
@@ -611,17 +611,17 @@ function TranslatorTool() {
   function setupExternalTextboxListener() {
     log('info', 'Setting up external textbox listener');
 
-    var observer = new MutationObserver(function(mutations) {
+    var observer = new MutationObserver(function (mutations) {
       var textbox = document.querySelector(CONFIG.textboxSelector);
       if (textbox && !textbox.dataset.translatorInitialized) {
         log('info', 'Found target textbox', { selector: CONFIG.textboxSelector });
         textbox.dataset.translatorInitialized = 'true';
-        textbox.addEventListener('input', function() {
+        textbox.addEventListener('input', function () {
           log('info', 'External textbox input detected');
           findMatches(textbox.value);
         });
 
-        textbox.addEventListener('mouseup', function() {
+        textbox.addEventListener('mouseup', function () {
           var selectedText = window.getSelection()?.toString();
           if (selectedText) {
             log('info', 'Text selection detected', { selectedText: selectedText.substring(0, 20) + (selectedText.length > 20 ? '...' : '') });
@@ -649,7 +649,7 @@ function TranslatorTool() {
       clearInterval(autoSearchIntervalId);
     }
 
-    autoSearchIntervalId = setInterval(function() {
+    autoSearchIntervalId = setInterval(function () {
       checkForEditorContent();
     }, CONFIG.autoSearchInterval);
   }
@@ -678,7 +678,7 @@ function TranslatorTool() {
   function parseEditorContent() {
     const editorContainer = document.querySelector(CONFIG.editorSourceContainer);
     if (!editorContainer) return null;
-    
+
     const sourceContainer = document.querySelector(CONFIG.sourceStringContainer);
     if (!sourceContainer) return null;
 
@@ -720,7 +720,7 @@ function TranslatorTool() {
       }
 
       result.fullText = result.fullText.trim();
-      
+
       return result;
     } catch (error) {
       log('error', 'Error parsing editor content:', error);
@@ -733,7 +733,7 @@ function TranslatorTool() {
     const sourceToggle = document.querySelector('#source-toggle');
     const remoteUrlInput = document.querySelector('#translator-settings-content input[type="text"]');
     const localFileInput = document.querySelector('#translator-settings-content input[type="file"]');
-    
+
     if (sourceToggle.checked) {
       if (localFileInput && localFileInput.files.length > 0) {
         readCSVFile(localFileInput.files[0]);
@@ -757,7 +757,7 @@ function TranslatorTool() {
     GM_xmlhttpRequest({
       method: 'GET',
       url: url,
-      onload: function(response) {
+      onload: function (response) {
         if (response.status === 200) {
           parseCSV(response.responseText);
           currentCSVSource = url;
@@ -767,7 +767,7 @@ function TranslatorTool() {
           updateResults('Failed to fetch remote CSV. Please check the URL and try again.');
         }
       },
-      onerror: function(error) {
+      onerror: function (error) {
         log('error', 'Error fetching remote CSV', error);
         updateResults('Error fetching remote CSV. Please check your connection and try again.');
       }
@@ -777,13 +777,13 @@ function TranslatorTool() {
   function readCSVFile(file) {
     log('info', 'Reading CSV file');
     var reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       var content = e.target?.result;
       log('info', 'CSV file loaded, content length', { length: content.length });
       parseCSV(content);
       currentCSVSource = file.name;
     };
-    reader.onerror = function(error) {
+    reader.onerror = function (error) {
       log('error', 'Error reading file', error);
       updateResults('Error reading CSV file. Please try again.');
     };
@@ -808,7 +808,7 @@ function TranslatorTool() {
         for (var j = 0; j < line.length; j++) {
           var char = line[j];
 
-          if (char === '"' && (j === 0 || line[j-1] !== '\\')) {
+          if (char === '"' && (j === 0 || line[j - 1] !== '\\')) {
             inQuotes = !inQuotes;
           } else if (char === ',' && !inQuotes) {
             values.push(currentValue);
@@ -822,7 +822,7 @@ function TranslatorTool() {
         values.push(currentValue);
 
         // Remove quotes if present
-        values = values.map(function(v) {
+        values = values.map(function (v) {
           return v.replace(/^"(.*)"$/, '$1');
         });
 
@@ -836,7 +836,7 @@ function TranslatorTool() {
       }
     }
 
-    log('success', 'CSV parsing complete', { 
+    log('success', 'CSV parsing complete', {
       entries: translationData.length,
       source: currentCSVSource || 'CSV'
     });
@@ -848,7 +848,7 @@ function TranslatorTool() {
   function findMatches(text) {
     if (!text || !translationData.length) return;
 
-    log('debug', 'Finding matches', { 
+    log('debug', 'Finding matches', {
       text: text.substring(0, 50) + (text.length > 50 ? '...' : ''),
       length: text.length
     });
@@ -857,7 +857,7 @@ function TranslatorTool() {
     var matches = [];
     var seenWords = new Set();
 
-    words.forEach(function(word) {
+    words.forEach(function (word) {
       // Clean the word from punctuation
       var cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
       if (!cleanWord || cleanWord.length <= 1) return; // Skip single characters
@@ -866,13 +866,13 @@ function TranslatorTool() {
       seenWords.add(cleanWord.toLowerCase());
 
       // Find matches
-      translationData.forEach(function(entry) {
+      translationData.forEach(function (entry) {
         // For short words (2-3 chars), use stricter matching
         if (cleanWord.length <= 3) {
           // Only match if it's a complete word match or surrounded by word boundaries
           const regex = new RegExp(`\\b${cleanWord}\\b`, 'i');
           if (regex.test(entry.source) &&
-              !matches.some(function(m) { return m.entry.source === entry.source; })) {
+            !matches.some(function (m) { return m.entry.source === entry.source; })) {
             matches.push({
               entry: entry,
               score: 1,
@@ -883,7 +883,7 @@ function TranslatorTool() {
           // For longer words, use fuzzy match with higher threshold
           const score = similarity(entry.source.toLowerCase(), cleanWord.toLowerCase());
           if (score >= CONFIG.fuzzyThreshold &&
-              !matches.some(function(m) { return m.entry.source === entry.source; })) {
+            !matches.some(function (m) { return m.entry.source === entry.source; })) {
             matches.push({
               entry: entry,
               score: score,
@@ -894,7 +894,7 @@ function TranslatorTool() {
       });
     });
 
-    matches.sort(function(a, b) {
+    matches.sort(function (a, b) {
       if (b.score === a.score) {
         return b.matchedWord.length - a.matchedWord.length;
       }
@@ -918,9 +918,9 @@ function TranslatorTool() {
     var matches = [];
 
     // Find matches
-    translationData.forEach(function(entry) {
+    translationData.forEach(function (entry) {
       let score = 0;
-      
+
       // For short queries (2-3 chars), use stricter matching
       if (query.length <= 3) {
         // Only match if it's a complete word match or surrounded by word boundaries
@@ -933,7 +933,7 @@ function TranslatorTool() {
         const sourceScore = similarity(entry.source.toLowerCase(), query);
         const targetScore = similarity(entry.target.toLowerCase(), query);
         const noteScore = entry.note ? similarity(entry.note.toLowerCase(), query) : 0;
-        
+
         // Use the highest score
         score = Math.max(sourceScore, targetScore, noteScore);
       }
@@ -948,7 +948,7 @@ function TranslatorTool() {
     });
 
     // Sort matches by score (highest first) and text length (longer matches first)
-    matches.sort(function(a, b) {
+    matches.sort(function (a, b) {
       if (b.score === a.score) {
         return b.entry.source.length - a.entry.source.length;
       }
@@ -1022,7 +1022,7 @@ function TranslatorTool() {
 
     // Create table body
     var tbody = document.createElement('tbody');
-    matches.forEach(function(match) {
+    matches.forEach(function (match) {
       var row = document.createElement('tr');
       const scorePercentage = Math.round(match.score * 100);
       const bgColor = `rgba(26, 115, 232, ${match.score * 0.1})`;
@@ -1093,36 +1093,36 @@ function TranslatorTool() {
     GM_xmlhttpRequest({
       method: 'GET',
       url: CONFIG.updateCheckUrl,
-      onload: function(response) {
+      onload: function (response) {
         if (response.status === 200) {
           try {
             const versionInfo = JSON.parse(response.responseText);
             const latestVersion = versionInfo.latest;
             const needsVersionUpdate = latestVersion !== CONFIG.currentVersion;
-            
-            log('info', 'Retrieved version info', { 
+
+            log('info', 'Retrieved version info', {
               current: CONFIG.currentVersion,
-              latest: latestVersion 
+              latest: latestVersion
             });
 
             // Check CSV data
             const sourceToggle = document.querySelector('#source-toggle');
             const remoteUrlInput = document.querySelector('#translator-settings-content input[type="text"]');
-            const csvUrl = (!sourceToggle || !sourceToggle.checked) ? 
-                          (remoteUrlInput && remoteUrlInput.value.trim() ? remoteUrlInput.value.trim() : CONFIG.remoteCSVUrl) : 
-                          null;
+            const csvUrl = (!sourceToggle || !sourceToggle.checked) ?
+              (remoteUrlInput && remoteUrlInput.value.trim() ? remoteUrlInput.value.trim() : CONFIG.remoteCSVUrl) :
+              null;
 
             if (csvUrl) {
               log('info', 'Checking CSV updates from', { url: csvUrl });
               GM_xmlhttpRequest({
                 method: 'GET',
                 url: csvUrl,
-                onload: function(csvResponse) {
+                onload: function (csvResponse) {
                   if (csvResponse.status === 200) {
                     try {
                       const newData = parseCSVToArray(csvResponse.responseText);
                       const needsDataUpdate = JSON.stringify(translationData) !== JSON.stringify(newData);
-                      log('info', 'CSV check complete', { 
+                      log('info', 'CSV check complete', {
                         needsUpdate: needsDataUpdate,
                         currentEntries: translationData.length,
                         newEntries: newData.length
@@ -1137,7 +1137,7 @@ function TranslatorTool() {
                     updateUIAfterChecks(needsVersionUpdate, false, latestVersion, null);
                   }
                 },
-                onerror: function(csvError) {
+                onerror: function (csvError) {
                   log('error', 'Error fetching CSV', csvError);
                   updateUIAfterChecks(needsVersionUpdate, false, latestVersion, null);
                 }
@@ -1157,7 +1157,7 @@ function TranslatorTool() {
           updateLink.style.color = '#F44336';
         }
       },
-      onerror: function(error) {
+      onerror: function (error) {
         log('error', 'Error checking for updates', error);
         updateLink.textContent = 'Error checking for updates';
         updateLink.style.color = '#F44336';
@@ -1168,7 +1168,7 @@ function TranslatorTool() {
   function parseCSVToArray(csvContent) {
     const lines = csvContent.split('\n');
     const result = [];
-    
+
     // Skip header
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
@@ -1180,7 +1180,7 @@ function TranslatorTool() {
         for (let j = 0; j < line.length; j++) {
           const char = line[j];
 
-          if (char === '"' && (j === 0 || line[j-1] !== '\\')) {
+          if (char === '"' && (j === 0 || line[j - 1] !== '\\')) {
             inQuotes = !inQuotes;
           } else if (char === ',' && !inQuotes) {
             values.push(currentValue);
@@ -1223,7 +1223,7 @@ function TranslatorTool() {
         translationData = newData;
         log('success', 'Updated translation data', { entries: newData.length });
         updateResults(`Updated with ${newData.length} translations`);
-        
+
         setTimeout(() => {
           updateLink.textContent = 'Translations updated ✓';
           updateLink.style.color = '#4CAF50';
@@ -1278,12 +1278,12 @@ function TranslatorTool() {
 
     document.body.appendChild(notification);
 
-    document.getElementById('csv-translator-dismiss').addEventListener('click', function() {
+    document.getElementById('csv-translator-dismiss').addEventListener('click', function () {
       document.body.removeChild(notification);
     });
 
     if (hasVersionUpdate) {
-      document.getElementById('csv-translator-update').addEventListener('click', function() {
+      document.getElementById('csv-translator-update').addEventListener('click', function () {
         window.open(CONFIG.metadata.repository, '_blank');
         document.body.removeChild(notification);
       });
@@ -1299,7 +1299,7 @@ function TranslatorTool() {
   init();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   log('info', 'DOMContentLoaded event fired');
   try {
     new TranslatorTool();
@@ -1311,7 +1311,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Fallback initialization
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   log('info', 'Document already loaded, initializing immediately');
-  setTimeout(function() {
+  setTimeout(function () {
     try {
       new TranslatorTool();
     } catch (error) {
