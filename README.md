@@ -10,7 +10,7 @@ A userscript that enhances Crowdin's translation editor by providing cross refer
    - For Edge: Install [Tampermonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)
 
 2. Click on this link to install the script:
-   [Install Crowdin Localization Tools](https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.js)
+   [Install Crowdin Localization Tools](https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.user.js)
 
 3. When prompted by your userscript manager, click "Install" or "OK" to complete the installation.
 
