@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Crowdin Localization Tools
 // @namespace    https://yuzu.kirameki.cafe/
-// @version      1.0.2
+// @version      1.0.3
 // @description  A tool for translating Crowdin projects using a CSV file
 // @author       Yuzu (YuzuZensai)
 // @match        https://crowdin.com/editor/*
 // @grant        GM_addStyle
 // @grant        GM_xmlhttpRequest
-// @updateURL    https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.user.js
-// @downloadURL  https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.user.js
+// @updateURL    https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/refs/heads/main/script.user.js
+// @downloadURL  https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/refs/heads/main/script.user.js
 // @connect      github.com
 // @connect      raw.githubusercontent.com
 // ==/UserScript==
@@ -26,7 +26,7 @@ const CONFIG = {
 
   // Update check
   updateCheckUrl: 'https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/data/version.json',
-  currentVersion: '1.0.2',
+  currentVersion: '1.0.3',
 
   // Remote CSV
   remoteCSVUrl: 'https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/data/data.csv',
@@ -42,7 +42,7 @@ const CONFIG = {
   fuzzyThreshold: 0.7,
 
   metadata: {
-    version: '1.0.2',
+    version: '1.0.3',
     repository: 'https://github.com/YuzuZensai/Crowdin-Localization-Tools',
     authorGithub: 'https://github.com/YuzuZensai'
   }
