@@ -9,6 +9,8 @@
 // @grant        GM_xmlhttpRequest
 // @updateURL    https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.user.js
 // @downloadURL  https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.user.js
+// @connect      github.com
+// @connect      raw.githubusercontent.com
 // ==/UserScript==
 
 // Global configuration
