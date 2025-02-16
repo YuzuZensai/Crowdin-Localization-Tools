@@ -1,10 +1,10 @@
-English,Thai,Note
+English,Thai,Note / Context (มีตรงไหนผิด/ไม่ Update กับใน Discord ก็ Comment ได้นะคะ)
 Accessibility,การช่วยการเข้าถึง,
 Action menu,เมนูคำสั่ง,
 AFK,AFK,
-Ago,ที่แล้ว,เช่น 5 ชั่วโมงที่แล้ว
+Ago,ที่แล้ว,"Relative time, ใช้บอกเวลาที่ผ่านไป เช่น 5 ชั่วโมงที่แล้ว"
 Avatar,อวาตาร์,
-Avatar culling,การซ่อนอวาตาร์,
+Avatar culling,การซ่อนอวาตาร์,Culling เป็น ศัพท์ทางเทคนิค
 Badge,เหรียญตรา,
 Binding,ตั้งค่าปุ่ม,
 Block,บล็อก,
@@ -13,11 +13,11 @@ Browse,เรียกดู,
 Calibrate,ตั้งศูนย์,
 Captcha,แคปช่า,
 Change,ปรับ,
-Chat,,
+Chat,,Awaiting Vote Result
 Chatbox,ช่องแชท,
 Click,คลิก,
-Colliders,คอลไลเดอร์,
-Debug,ดีบัก,
+Colliders,คอลไลเดอร์,ศัพท์ทางเทคนิค Unity
+Debug,ดีบัก,ศัพท์ทางเทคนิค Dev
 Decrease,ลด,
 Default,ค่าเริ่มต้น,
 Dismiss Notification,เพิกเฉยการแจ้งเตือน,
@@ -26,49 +26,50 @@ Dynamic,ไดนามิก,
 Earmuffs,ปิดเสียงรอบข้าง,
 Email,อีเมล,
 Error,เกิดข้อผิดพลาด,
-Excellent,ยอดเยี่ยม,
+Excellent,ยอดเยี่ยม,Avatar performance ranks
 Failed,ล้มเหลว,
 Fallback,ตัวสำรอง,
 Favorite,ชื่นชอบ,
 Favorites,รายการโปรด,
-"FBT, Full body Tracking",ฟูลบอดี้แทร็กกิ้ง,
+FBT,ฟูลบอดี้แทร็กกิ้ง,
 Feature,ฟีเจอร์,
-Friends,เพื่อน,
-Friends+,เพื่อน+,
+Friends,เพื่อน,Instance types
+Friends+,เพื่อน+,Instance types
+Full body Tracking,ฟูลบอดี้แทร็กกิ้ง,
 Gallery,คลังภาพ,
 Gestures,ท่าทาง,
-Good,ดี,
+Good,ดี,Avatar performance ranks
 Goodbye,ลาก่อน,
-Group,กลุ่ม,
-Group Public,กลุ่มสาธารณะ,
-Group+,กลุ่ม+,
-Hang out,,
+Group,กลุ่ม,Instance types
+Group Public,กลุ่มสาธารณะ,Instance types
+Group+,กลุ่ม+,Instance types
+Hang out,,Awaiting Vote Result
 Haptics,การสัมผัส,
 Headset,เฮดเซ็ท,
 Hello,สวัสดี,
 Horizontal Adjust,การปรับแนวระนาบ,
 Icon,ไอคอน,
-ID,,
+ID,,Awaiting Vote Result
 Image,ภาพ,
-Impostor,อิมพอสเตอร์,
+Impostor,อิมพอสเตอร์,Avatar feature
 Increase,เพิ่ม,
 Instance,อินสแตนซ์,
 Interactions,การโต้ตอบ,
-Invite,เชิญเท่านั้น,
-Invite+,เชิญ+,
+Invite,เชิญเท่านั้น,Instance types
+Invite+,เชิญ+,Instance types
 Join,เข้าร่วม,
-Jump,ข้าม,Use in UI components
-Known User,ผู้ใช้ที่รู้จัก,
+Jump,ข้าม,ใช้ใน UI
+Known User,ผู้ใช้ที่รู้จัก,Trust ranks
 Loading,กำลังโหลด,
-Master,หัวห้อง,
-Medium,ปานกลาง,
+Master,หัวห้อง,Instance owner
+Medium,ปานกลาง,Avatar performance ranks
 Meta Quest,Meta Quest,
 Mobile,อุปกรณ์พกพา,
 Motion Sickness,อาการวิงเวียน,
 Nameplate,ป้ายชื่อ,
-New User,ผู้ใช้ใหม่,
+New User,ผู้ใช้ใหม่,Trust ranks
 No,ไม่,
-Nuisance,ตัวป่วน,
+Nuisance,ตัวป่วน,Trust ranks
 Override,ตั้งค่าทับซ้อน,
 Particles,อนุภาค,
 PC,พีซี,
@@ -77,39 +78,40 @@ Persistence,ข้อมูลจัดเก็บ,
 Photo,รูป,
 Platforms,แพลตฟอร์ม,
 Please,กรุณา,
-Polygons,โพลิกอน,
-Poor,แย่,
+Polygons,โพลิกอน,ศัพท์ทางเทคนิค
+Poor,แย่,Avatar performance ranks
 Portal,ประตูมิติ,
-Profile,,
-Public,สาธารณะ,
+Profile,,Awaiting Vote Result
+Public,สาธารณะ,Instance types
 Push To Talk,กดเพื่อคุย,
-Rank,,
-Remove,"ลบ, นำออก",
+Quest,Quest,
+Rank,,Awaiting Vote Result
+Remove,"ลบ, นำออก",ขึ้นอยู่กับบริบท
 Rendering,การเรนเดอร์,
 Report, รายงาน,
-Require,จำเป็น,Use in UI components
+Require,จำเป็น,ใช้ใน UI
 Restart,รีสตาร์ท,
-Send Boop,,
-Share,,
+Send Boop,,Awaiting Vote Result
+Share,,Awaiting Vote Result
 Shield Level,ระดับโล่,
 Social,สังคม,
 Steam,Steam,
 Steam Overlay,Steam Overlay,
-Steam VR,Steam VR,
+SteamVR,SteamVR,
 Strict,เคร่งครัด,
 Surface,พื้นผิว,
 Thank you,ขอบคุณ,
 Tracking,แทร็กกิ้ง,
-Trusted User,ผู้ใช้ที่เชื่อถือได้,
+Trusted User,ผู้ใช้ที่เชื่อถือได้,Trust ranks
 Tunneling,ระบบลดการมองเห็น,
 Type,รูปแบบ,ขึ้นอยู่กับบริบท
 UI,UI,
-Unfavorite,"ยกเลิกรายการโปรด, ลบจากรายการโปรด",
+Unfavorite,"ยกเลิกรายการโปรด, ลบจากรายการโปรด",Depends on context
 Update,อัปเดต,
-User,ผู้ใช้,
-Version,,
-Very Poor,แย่มาก,
-Visitor,ผู้เยี่ยมชม,
+User,ผู้ใช้,Trust ranks
+Version,,Awaiting Vote Result
+Very Poor,แย่มาก,Avatar performance ranks
+Visitor,ผู้เยี่ยมชม,Trust Ranks
 VRC+,VRC+,
 VRChat,VRChat,
 World,โลก,
