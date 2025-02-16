@@ -18,7 +18,7 @@ Browse,เรียกดู,
 Calibrate,ตั้งศูนย์,
 Captcha,แคปช่า,
 Change,ปรับ,
-Chat,,Awaiting Vote Result
+Chat,แชท,
 Chatbox,ช่องแชท, 
 Click,คลิก,
 Colliders,คอลไลเดอร์,ศัพท์ทางเทคนิค Unity
@@ -54,7 +54,7 @@ Headset,เฮดเซ็ท,
 Hello,สวัสดี,
 Horizontal Adjust,การปรับแนวระนาบ,
 Icon,ไอคอน,
-ID,,Awaiting Vote Result
+ID,ไอดี,
 Image,ภาพ,
 Impostor,อิมพอสเตอร์,Avatar feature
 Increase,เพิ่ม,
@@ -86,17 +86,17 @@ Please,กรุณา,
 Polygons,โพลิกอน,ศัพท์ทางเทคนิค
 Poor,แย่,Avatar performance ranks
 Portal,ประตูมิติ,
-Profile,,Awaiting Vote Result
+Profile,โปรไฟล์,
 Public,สาธารณะ,Instance types
 Push To Talk,กดเพื่อคุย,
 Quest,Quest,
-Rank,,Awaiting Vote Result
+Rank,ยศ,
 Remove,"ลบ, นำออก",ขึ้นอยู่กับบริบท
 Rendering,การเรนเดอร์,
 Report, รายงาน,
 Require,จำเป็น,ใช้ใน UI
 Restart,รีสตาร์ท,
-Send Boop,,Awaiting Vote Result
+Send Boop,สะกิด,
 Share,ส่งต่อ,
 Shield Level,ระดับโล่,
 Social,สังคม,
