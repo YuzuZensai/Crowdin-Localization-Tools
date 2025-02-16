@@ -34,6 +34,7 @@ const CONFIG = {
 
   // Crowdin editor
   textboxSelector: '.editor-panel__editor-container textarea',
+  stringNumberSelector: '#file_options > li:nth-child(4) > a:nth-child(1)',
   editorSourceContainer: '.editor-current-translation-source',
   sourceStringContainer: '#source_phrase_container',
 
@@ -267,6 +268,21 @@ function TranslatorTool() {
     searchContainer.style.position = 'relative';
     searchContainer.style.marginBottom = '16px';
     searchContainer.style.flexShrink = '0';
+
+    // Current string label
+    var currentStringLabel = document.createElement('div');
+    currentStringLabel.style.fontSize = '12px';
+    currentStringLabel.style.color = '#666';
+    currentStringLabel.style.marginBottom = '4px';
+    currentStringLabel.style.padding = '4px';
+    currentStringLabel.style.backgroundColor = '#f8f9fa';
+    currentStringLabel.style.borderRadius = '4px';
+    currentStringLabel.style.whiteSpace = 'nowrap';
+    currentStringLabel.style.overflow = 'hidden';
+    currentStringLabel.style.textOverflow = 'ellipsis';
+    currentStringLabel.textContent = 'Current string: ';
+    currentStringLabel.id = 'current-string-label';
+    searchContainer.appendChild(currentStringLabel);
 
     // Search input
     searchInput = document.createElement('input');
@@ -663,9 +679,17 @@ function TranslatorTool() {
       if (content && content.fullText) {
         if (content.fullText !== lastSearchedText) {
           lastSearchedText = content.fullText;
+
+          const currentStringLabel = document.getElementById('current-string-label');
+          if (currentStringLabel) {
+            const stringIdText = content.stringId ? ` [ID: ${content.stringId}]` : '';
+            currentStringLabel.textContent = 'Current string' + stringIdText + ': ' + content.fullText.substring(0, 100) + (content.fullText.length > 100 ? '...' : '');
+          }
+
           log('debug', 'Editor content changed', {
             text: content.fullText,
             terms: content.terms,
+            stringId: content.stringId,
             length: content.fullText.length
           });
           findMatches(lastSearchedText);
@@ -685,10 +709,20 @@ function TranslatorTool() {
 
     const result = {
       fullText: '',
-      terms: []
+      terms: [],
+      stringId: ''
     };
 
     try {
+      const contextLink = document.querySelector('a[href*="view_in_context"]');
+      if (contextLink) {
+        const href = contextLink.getAttribute('href');
+        const match = href.match(/#(\d+)/);
+        if (match && match[1]) {
+          result.stringId = match[1];
+        }
+      }
+
       const singularContainer = sourceContainer.querySelector('.singular');
       if (singularContainer) {
         let nodes = singularContainer.childNodes;
