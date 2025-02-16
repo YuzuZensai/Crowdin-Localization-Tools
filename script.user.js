@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Crowdin Localization Tools
 // @namespace    https://yuzu.kirameki.cafe/
-// @version      1.0.3
+// @version      1.0.4
 // @description  A tool for translating Crowdin projects using a CSV file
 // @author       Yuzu (YuzuZensai)
 // @match        https://crowdin.com/editor/*
@@ -26,7 +26,6 @@ const CONFIG = {
 
   // Update check
   updateCheckUrl: 'https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/data/version.json',
-  currentVersion: '1.0.3',
 
   // Remote CSV
   remoteCSVUrl: 'https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/data/data.csv',
@@ -42,7 +41,7 @@ const CONFIG = {
   fuzzyThreshold: 0.7,
 
   metadata: {
-    version: '1.0.3',
+    version: '1.0.4',
     repository: 'https://github.com/YuzuZensai/Crowdin-Localization-Tools',
     authorGithub: 'https://github.com/YuzuZensai'
   }
@@ -1063,9 +1062,9 @@ function TranslatorTool() {
         matchCell.textContent = `${match.matchedWord} (${scorePercentage}%)`;
         matchCell.style.padding = '8px';
         matchCell.style.border = '1px solid #e0e0e0';
-        matchCell.style.overflow = 'hidden';
-        matchCell.style.textOverflow = 'ellipsis';
-        matchCell.style.whiteSpace = 'nowrap';
+        matchCell.style.wordBreak = 'break-word';
+        matchCell.style.whiteSpace = 'normal';
+        matchCell.style.verticalAlign = 'top';
         row.appendChild(matchCell);
       }
 
@@ -1100,10 +1099,10 @@ function TranslatorTool() {
           try {
             const versionInfo = JSON.parse(response.responseText);
             const latestVersion = versionInfo.latest;
-            const needsVersionUpdate = latestVersion !== CONFIG.currentVersion;
+            const needsVersionUpdate = latestVersion !== CONFIG.metadata.version;
 
             log('info', 'Retrieved version info', {
-              current: CONFIG.currentVersion,
+              current: CONFIG.metadata.version,
               latest: latestVersion
             });
 
