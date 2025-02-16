@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Crowdin Localization Tools
 // @namespace    https://yuzu.kirameki.cafe/
-// @version      1.0.5
+// @version      1.0.6
 // @description  A tool for translating Crowdin projects using a CSV file
 // @author       Yuzu (YuzuZensai)
 // @match        https://crowdin.com/editor/*
@@ -42,7 +42,7 @@ const CONFIG = {
   fuzzyThreshold: 0.7,
 
   metadata: {
-    version: '1.0.5',
+    version: '1.0.6',
     repository: 'https://github.com/YuzuZensai/Crowdin-Localization-Tools',
     authorGithub: 'https://github.com/YuzuZensai'
   }
@@ -1063,43 +1063,64 @@ function TranslatorTool() {
       const bgColor = `rgba(26, 115, 232, ${match.score * 0.1})`;
       row.style.backgroundColor = bgColor;
 
-      // Add cells
-      var sourceCell = document.createElement('td');
-      sourceCell.textContent = match.entry.source;
-      sourceCell.style.padding = '8px';
-      sourceCell.style.border = '1px solid #e0e0e0';
-      sourceCell.style.wordBreak = 'break-word';
-      sourceCell.style.whiteSpace = 'normal';
-      sourceCell.style.verticalAlign = 'top';
-      row.appendChild(sourceCell);
+      function createCopyableCell(text, isTarget = false) {
+        var cell = document.createElement('td');
+        cell.textContent = text;
+        cell.style.padding = '8px';
+        cell.style.border = '1px solid #e0e0e0';
+        cell.style.wordBreak = 'break-word';
+        cell.style.whiteSpace = 'normal';
+        cell.style.verticalAlign = 'top';
+        cell.style.cursor = 'pointer';
+        cell.style.userSelect = 'text';
+        cell.style.position = 'relative';
+        cell.title = 'Click to copy';
 
-      var targetCell = document.createElement('td');
-      targetCell.textContent = match.entry.target;
-      targetCell.style.padding = '8px';
-      targetCell.style.border = '1px solid #e0e0e0';
-      targetCell.style.wordBreak = 'break-word';
-      targetCell.style.whiteSpace = 'normal';
-      targetCell.style.verticalAlign = 'top';
-      row.appendChild(targetCell);
+        // Hover effect
+        cell.addEventListener('mouseover', function() {
+          this.style.backgroundColor = 'rgba(26, 115, 232, 0.1)';
+        });
 
-      var noteCell = document.createElement('td');
-      noteCell.textContent = match.entry.note;
-      noteCell.style.padding = '8px';
-      noteCell.style.border = '1px solid #e0e0e0';
-      noteCell.style.wordBreak = 'break-word';
-      noteCell.style.whiteSpace = 'normal';
-      noteCell.style.verticalAlign = 'top';
-      row.appendChild(noteCell);
+        cell.addEventListener('mouseout', function() {
+          this.style.backgroundColor = 'transparent';
+        });
+
+        cell.addEventListener('click', function(e) {
+          if (window.getSelection().toString()) {
+            return;
+          }
+
+          navigator.clipboard.writeText(text).then(() => {
+            var tooltip = document.createElement('div');
+            tooltip.textContent = 'Copied!';
+            tooltip.style.position = 'absolute';
+            tooltip.style.backgroundColor = '#333';
+            tooltip.style.color = 'white';
+            tooltip.style.padding = '4px 8px';
+            tooltip.style.borderRadius = '4px';
+            tooltip.style.fontSize = '12px';
+            tooltip.style.zIndex = '1000';
+            tooltip.style.top = '0';
+            tooltip.style.left = '50%';
+            tooltip.style.transform = 'translate(-50%, -100%)';
+            
+            cell.appendChild(tooltip);
+
+            setTimeout(() => {
+              tooltip.remove();
+            }, 1000);
+          });
+        });
+
+        return cell;
+      }
+
+      row.appendChild(createCopyableCell(match.entry.source));
+      row.appendChild(createCopyableCell(match.entry.target, true));
+      row.appendChild(createCopyableCell(match.entry.note));
 
       if (match.matchedWord) {
-        var matchCell = document.createElement('td');
-        matchCell.textContent = `${match.matchedWord} (${scorePercentage}%)`;
-        matchCell.style.padding = '8px';
-        matchCell.style.border = '1px solid #e0e0e0';
-        matchCell.style.wordBreak = 'break-word';
-        matchCell.style.whiteSpace = 'normal';
-        matchCell.style.verticalAlign = 'top';
-        row.appendChild(matchCell);
+        row.appendChild(createCopyableCell(`${match.matchedWord} (${scorePercentage}%)`));
       }
 
       tbody.appendChild(row);
