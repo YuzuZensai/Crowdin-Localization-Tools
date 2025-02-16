@@ -1,8 +1,11 @@
 English,Thai,Note / Context (มีตรงไหนผิด/ไม่ Update กับใน Discord ก็ Comment ได้นะคะ)
+(x) are now disabled,เปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า
+(x) are now enabled ,ปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า
 Accessibility,การช่วยการเข้าถึง,
 Action menu,เมนูคำสั่ง,
 AFK,AFK,
 Ago,ที่แล้ว,"Relative time, ใช้บอกเวลาที่ผ่านไป เช่น 5 ชั่วโมงที่แล้ว"
+Auto,อัตโนมัติ,Mostly on camera settings
 Avatar,อวาตาร์,
 Avatar culling,การซ่อนอวาตาร์,Culling เป็น ศัพท์ทางเทคนิค
 Badge,เหรียญตรา,
@@ -14,7 +17,7 @@ Calibrate,ตั้งศูนย์,
 Captcha,แคปช่า,
 Change,ปรับ,
 Chat,,Awaiting Vote Result
-Chatbox,ช่องแชท,
+Chatbox,ช่องแชท, 
 Click,คลิก,
 Colliders,คอลไลเดอร์,ศัพท์ทางเทคนิค Unity
 Debug,ดีบัก,ศัพท์ทางเทคนิค Dev
