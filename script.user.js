@@ -1035,27 +1035,27 @@ function TranslatorTool() {
       sourceCell.textContent = match.entry.source;
       sourceCell.style.padding = '8px';
       sourceCell.style.border = '1px solid #e0e0e0';
-      sourceCell.style.overflow = 'hidden';
-      sourceCell.style.textOverflow = 'ellipsis';
-      sourceCell.style.whiteSpace = 'nowrap';
+      sourceCell.style.wordBreak = 'break-word';
+      sourceCell.style.whiteSpace = 'normal';
+      sourceCell.style.verticalAlign = 'top';
       row.appendChild(sourceCell);
 
       var targetCell = document.createElement('td');
       targetCell.textContent = match.entry.target;
       targetCell.style.padding = '8px';
       targetCell.style.border = '1px solid #e0e0e0';
-      targetCell.style.overflow = 'hidden';
-      targetCell.style.textOverflow = 'ellipsis';
-      targetCell.style.whiteSpace = 'nowrap';
+      targetCell.style.wordBreak = 'break-word';
+      targetCell.style.whiteSpace = 'normal';
+      targetCell.style.verticalAlign = 'top';
       row.appendChild(targetCell);
 
       var noteCell = document.createElement('td');
       noteCell.textContent = match.entry.note;
       noteCell.style.padding = '8px';
       noteCell.style.border = '1px solid #e0e0e0';
-      noteCell.style.overflow = 'hidden';
-      noteCell.style.textOverflow = 'ellipsis';
-      noteCell.style.whiteSpace = 'nowrap';
+      noteCell.style.wordBreak = 'break-word';
+      noteCell.style.whiteSpace = 'normal';
+      noteCell.style.verticalAlign = 'top';
       row.appendChild(noteCell);
 
       if (match.matchedWord) {
