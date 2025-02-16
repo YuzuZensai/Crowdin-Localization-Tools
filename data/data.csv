@@ -7,6 +7,7 @@ Accessibility,การช่วยการเข้าถึง,
 Action Menu,เมนูคำสั่ง,
 AFK,AFK,
 Ago,ที่แล้ว,"Relative time, ใช้บอกเวลาที่ผ่านไป เช่น 5 ชั่วโมงที่แล้ว"
+Animator,,Awaiting vote ศัพท์ทางเทคนิค Unity
 Auto,อัตโนมัติ,Mostly on camera settings
 Avatar,อวาตาร์,
 Avatar Culling,การซ่อนอวาตาร์,Culling เป็น ศัพท์ทางเทคนิค
@@ -28,8 +29,10 @@ Default,ค่าเริ่มต้น,
 Dismiss Notification,เพิกเฉยการแจ้งเตือน,
 Drift,ดริฟท์,
 Dynamic,ไดนามิก,
+Dynamic Bone,,Awaiting vote ศัพท์ทางเทคนิค Unity
 Earmuffs,ปิดเสียงรอบข้าง,
 Email,อีเมล,
+Emojis,อิโมจิ,
 Error,เกิดข้อผิดพลาด,
 Excellent,ยอดเยี่ยม,Avatar performance ranks
 Failed,ล้มเหลว,
@@ -53,6 +56,7 @@ Haptics,การสัมผัส,
 Headset,เฮดเซ็ท,
 Hello,สวัสดี,
 Horizontal Adjust,การปรับแนวระนาบ,
+Hub,,Awaiting vote
 Icon,ไอคอน,
 ID,ไอดี,
 Image,ภาพ,
@@ -75,6 +79,7 @@ Nameplate,ป้ายชื่อ,
 New User,ผู้ใช้ใหม่,Trust ranks
 No,ไม่,
 Nuisance,ตัวป่วน,Trust ranks
+Opacity,,Awaiting vote
 Override,ตั้งค่าทับซ้อน,
 Particles,อนุภาค,
 PC,พีซี,
@@ -97,7 +102,7 @@ Report, รายงาน,
 Require,จำเป็น,ใช้ใน UI
 Restart,รีสตาร์ท,
 Send Boop,สะกิด,
-Share,ส่งต่อ,
+Share,แชร์,
 Shield Level,ระดับโล่,
 Social,สังคม,
 Steam,Steam,
@@ -107,6 +112,7 @@ Strict,เคร่งครัด,
 Surface,พื้นผิว,
 Thank you,ขอบคุณ,
 Tracking,แทร็กกิ้ง,
+Transform,,Awaiting vote ศัพท์ทางเทคนิค Unity
 Trusted User,ผู้ใช้ที่เชื่อถือได้,Trust ranks
 Tunneling,ระบบลดการมองเห็น,
 Type,รูปแบบ,ขึ้นอยู่กับบริบท
