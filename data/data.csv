@@ -48,7 +48,7 @@ Goodbye,ลาก่อน,
 Group,กลุ่ม,Instance types
 Group Public,กลุ่มสาธารณะ,Instance types
 Group+,กลุ่ม+,Instance types
-Hang out,,Awaiting Vote Result
+Hang out,ไปสังสรรค์,
 Haptics,การสัมผัส,
 Headset,เฮดเซ็ท,
 Hello,สวัสดี,
@@ -97,7 +97,7 @@ Report, รายงาน,
 Require,จำเป็น,ใช้ใน UI
 Restart,รีสตาร์ท,
 Send Boop,,Awaiting Vote Result
-Share,,Awaiting Vote Result
+Share,ส่งต่อ,
 Shield Level,ระดับโล่,
 Social,สังคม,
 Steam,Steam,
@@ -114,7 +114,7 @@ UI,UI,
 Unfavorite,"ยกเลิกรายการโปรด, ลบจากรายการโปรด",Depends on context
 Update,อัปเดต,
 User,ผู้ใช้,Trust ranks
-Version,,Awaiting Vote Result
+Version,เวอร์ชัน,
 Very Poor,แย่มาก,Avatar performance ranks
 Visitor,ผู้เยี่ยมชม,Trust Ranks
 VRC+,VRC+,
