@@ -1,0 +1,33 @@
+# Environment variables
+.env
+*.env
+.env.*
+
+# Output files
+*.csv
+
+# Credentials and secrets
+client_secret*.json
+*-credentials.json
+credentials.json
+vrcsheet-*.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db 
