@@ -1,0 +1,65 @@
+name: Update Translation Data
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare repository variables
+        id: prep
+        run: |
+          echo "REPO_NAME=$(echo ${{ github.repository }} | tr '/' ' ' | awk '{print tolower($2)}')" >> $GITHUB_OUTPUT
+          echo "OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
+      - name: Pull latest Docker image
+        run: |
+          docker pull ghcr.io/${{ steps.prep.outputs.OWNER }}/${{ steps.prep.outputs.REPO_NAME }}:latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run container to update data
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/data:/app/data \
+            -e GOOGLE_SHEETS_PRIVATE_KEY='${{ secrets.GOOGLE_SHEETS_PRIVATE_KEY }}' \
+            -e GOOGLE_SHEETS_CLIENT_EMAIL='${{ secrets.GOOGLE_SHEETS_CLIENT_EMAIL }}' \
+            -e GOOGLE_SHEETS_ID='${{ secrets.GOOGLE_SHEETS_ID }}' \
+            ghcr.io/${{ steps.prep.outputs.OWNER }}/${{ steps.prep.outputs.REPO_NAME }}:latest
+
+      - name: Check for changes
+        id: check
+        run: |
+          if [ -f "data/data.csv" ]; then
+            if git diff --quiet data/data.csv; then
+              echo "No changes detected in data/data.csv"
+              echo "changes=false" >> $GITHUB_OUTPUT
+            else
+              echo "Changes detected in data/data.csv"
+              echo "changes=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "data/data.csv was created"
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push if changed
+        if: steps.check.outputs.changes == 'true'
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add data/data.csv
+          git commit -m "🔄 chore: update translation data [skip ci]"
+          git push 
