@@ -144,3 +144,10 @@ Controller,อุปกรณ์ควบคุม,,
 Reset,รีเซ็ต,,
 Community Labs,ห้องทดลองชุมชน,,
 Locomotion,การเคลื่อนไหว,,
+Avatar Pedestals,,Pending vote,
+Constraint,คอนสเตรนต์,,Unity / 3D
+Rigidbody,ริจิดบอดี้,,Unity / 3D
+Skinned Mesh,สกินด์เมช,,Unity / 3D
+Cloth,,"Will open vote, this is debatable",Unity / 3D
+PhysBone,ฟิสิกส์โบน,,Unity / 3D
+Mesh,เมช,,Unity / 3D
