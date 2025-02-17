@@ -40,7 +40,21 @@ async function getGitHash() {
 async function updateAPIMetadata() {
   console.log("Updating API Metadata...");
   try {
-    const currentDate = new Date().toISOString();
+    const date = new Date();
+
+    const offsetedTime = new Date(date.getTime() + 7 * 60 * 60 * 1000);
+    const currentDate = offsetedTime
+      .toLocaleString("en-US", {
+        timeZone: "Etc/GMT-7",
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      })
+      .replace(",", "");
     console.log(`Current timestamp: ${currentDate}`);
 
     sheets.spreadsheets.values.update({
