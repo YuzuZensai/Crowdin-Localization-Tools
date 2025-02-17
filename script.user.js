@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Crowdin Localization Tools
 // @namespace    https://yuzu.kirameki.cafe/
-// @version      1.0.7
+// @version      1.1.0
 // @description  A tool for translating Crowdin projects using a CSV file
 // @author       Yuzu (YuzuZensai)
 // @match        https://crowdin.com/editor/*
@@ -27,6 +27,7 @@ const CONFIG = {
   // Update check
   updateCheckUrl:
     "https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/data/version.json",
+  autoUpdateInterval: 15 * 60 * 1000, // 15 minutes
 
   // Remote CSV
   remoteCSVUrl:
@@ -44,7 +45,7 @@ const CONFIG = {
   fuzzyThreshold: 0.7,
 
   metadata: {
-    version: "1.0.7",
+    version: "1.1.0",
     repository: "https://github.com/YuzuZensai/Crowdin-Localization-Tools",
     authorGithub: "https://github.com/YuzuZensai",
   },
@@ -174,12 +175,13 @@ function TranslatorTool() {
     }
 
     const predefinedColors = {
-      UI: "#2196F3",
-      "Unity / 3D": "#9C27B0",
-      "VRChat Specific": "#4CAF50",
-      "Trust Rank": "#FF9800",
-      "Instance Type": "#795548",
-      "Avatar Performance Rank": "#F44336",
+      UI: "#c6dbe1",
+      "Unity / 3D": "#3d3d3d",
+      "Trust Rank": "#e6cff2",
+      "Instance Type": "#d4edbc",
+      "Avatar Performance Rank": "#ffc8aa",
+      "VRChat Specific": "#bfe1f6",
+      "Common": "#e6e6e6",
     };
 
     if (predefinedColors[category]) {
@@ -198,10 +200,75 @@ function TranslatorTool() {
     return color;
   }
 
+  function isColorBright(color) {
+    // Convert hex to RGB
+    let r, g, b;
+    if (color.startsWith('#')) {
+      const hex = color.replace('#', '');
+      r = parseInt(hex.substr(0, 2), 16);
+      g = parseInt(hex.substr(2, 2), 16);
+      b = parseInt(hex.substr(4, 2), 16);
+    } else if (color.startsWith('hsl')) {
+      // Convert HSL to RGB
+      const matches = color.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+      if (matches) {
+        const h = parseInt(matches[1]) / 360;
+        const s = parseInt(matches[2]) / 100;
+        const l = parseInt(matches[3]) / 100;
+
+        if (s === 0) {
+          r = g = b = l * 255;
+        } else {
+          const hue2rgb = (p, q, t) => {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1/6) return p + (q - p) * 6 * t;
+            if (t < 1/2) return q;
+            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+          };
+
+          const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+          const p = 2 * l - q;
+          r = hue2rgb(p, q, h + 1/3) * 255;
+          g = hue2rgb(p, q, h) * 255;
+          b = hue2rgb(p, q, h - 1/3) * 255;
+        }
+      } else {
+        r = g = b = 128; // Fallback to gray if parsing fails
+      }
+    } else {
+      r = g = b = 128; // Fallback to gray
+    }
+
+    // Convert RGB values to 0-1 range
+    const rr = r / 255;
+    const gg = g / 255;
+    const bb = b / 255;
+
+    // Calculate relative luminance (WCAG 2.0)
+    const luminance = 0.2126 * (rr <= 0.03928 ? rr / 12.92 : Math.pow((rr + 0.055) / 1.055, 2.4))
+                   + 0.7152 * (gg <= 0.03928 ? gg / 12.92 : Math.pow((gg + 0.055) / 1.055, 2.4))
+                   + 0.0722 * (bb <= 0.03928 ? bb / 12.92 : Math.pow((bb + 0.055) / 1.055, 2.4));
+
+    // Calculate YIQ
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+    // Combine both methods
+    // For pastel colors (high luminance but moderate YIQ)
+    if (luminance > 0.7) {
+      return true; // Definitely bright
+    } else if (luminance > 0.5 && yiq > 128) {
+      return true; // Moderately bright and good YIQ
+    }
+    return false;
+  }
+
   function createCategoryChip(category) {
     if (!category) return "";
 
     const color = generateColorForCategory(category);
+    const textColor = isColorBright(color) ? "#000000" : "#ffffff";
     return `<span style="
       display: inline-block;
       padding: 2px 8px;
@@ -209,7 +276,7 @@ function TranslatorTool() {
       border-radius: 12px;
       font-size: 11px;
       background-color: ${color};
-      color: white;
+      color: ${textColor};
       white-space: nowrap;
       ">${category}</span>`;
   }
@@ -227,8 +294,13 @@ function TranslatorTool() {
       fetchRemoteCSV(CONFIG.remoteCSVUrl);
     }
 
+    setInterval(() => {
+      log("info", "Running automatic update check");
+      checkForUpdates();
+    }, CONFIG.autoUpdateInterval);
+
     setTimeout(() => {
-      checkForEditorContent();
+      checkForEditorContent(true);
     }, 2000);
 
     log(
@@ -813,7 +885,7 @@ function TranslatorTool() {
     }
   }
 
-  function checkForEditorContent() {
+  function checkForEditorContent(forceRefresh = false) {
     if (!visible || translationData.length === 0) {
       log("debug", "Skipping editor content check", {
         visible: visible,
@@ -825,7 +897,7 @@ function TranslatorTool() {
     try {
       var content = parseEditorContent();
       if (content && content.fullText) {
-        if (content.fullText !== lastSearchedText) {
+        if (content.fullText !== lastSearchedText || forceRefresh) {
           lastSearchedText = content.fullText;
 
           const currentStringLabel = document.getElementById(
@@ -852,8 +924,6 @@ function TranslatorTool() {
             length: content.fullText.length,
           });
           findMatches(content.fullText);
-        } else {
-          log("debug", "Editor content unchanged");
         }
       } else {
         log("debug", "No valid editor content found");
@@ -939,14 +1009,14 @@ function TranslatorTool() {
         }
       }
 
-      if (result.fullText) {
-        log("debug", "Successfully parsed editor content", {
-          length: result.fullText.length,
-          stringId: result.stringId || "none",
-        });
-      } else {
-        log("debug", "No text content found in editor");
-      }
+      // if (result.fullText) {
+      //   log("debug", "Successfully parsed editor content", {
+      //     length: result.fullText.length,
+      //     stringId: result.stringId || "none",
+      //   });
+      // } else {
+      //   log("debug", "No text content found in editor");
+      // }
 
       return result;
     } catch (error) {
@@ -988,16 +1058,31 @@ function TranslatorTool() {
   function fetchRemoteCSV(url) {
     log("info", "Fetching remote CSV from", { url: url });
     GM_xmlhttpRequest({
-      method: "GET",
+      method: "GET", 
       url: url,
       onload: function (response) {
         if (response.status === 200) {
-          parseCSV(response.responseText);
-          currentCSVSource = url;
-          log("success", "Successfully loaded remote CSV");
+          try {
+            const newData = parseCSVToArray(response.responseText);
+            translationData = newData;
+            currentCSVSource = url;
+            
+            log("debug", "Translation data", {
+              translationData: JSON.stringify(translationData),
+              newData: JSON.stringify(newData)
+            });
+
+            log("success", "Successfully loaded remote CSV", {
+              entries: translationData.length
+            });
+
+          } catch (csvError) {
+            log("error", "Error parsing CSV data", csvError);
+            updateResults("Error parsing CSV data. Please check the file format and try again.");
+          }
         } else {
           log("error", "Failed to fetch remote CSV", {
-            status: response.status,
+            status: response.status
           });
           updateResults(
             "Failed to fetch remote CSV. Please check the URL and try again."
@@ -1009,7 +1094,7 @@ function TranslatorTool() {
         updateResults(
           "Error fetching remote CSV. Please check your connection and try again."
         );
-      },
+      }
     });
   }
 
@@ -1144,28 +1229,39 @@ function TranslatorTool() {
 
     var words = text.split(/\s+/);
     var matches = [];
-    var seenWords = new Set();
+    var seenCombinations = new Set();
 
     words.forEach(function (word) {
-      // Clean the word from punctuation
-      var cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
-      if (!cleanWord || cleanWord.length <= 1) return; // Skip single characters
+      if (!word) return;
 
-      if (seenWords.has(cleanWord.toLowerCase())) return;
-      seenWords.add(cleanWord.toLowerCase());
-
-      // Find matches
+      // First try exact match with punctuation
       translationData.forEach(function (entry) {
+        const uniqueKey = `${entry.source.toLowerCase()}_${entry.category || 'default'}`;
+        
+        // Exact match (case-insensitive)
+        if (entry.source.toLowerCase() === word.toLowerCase() && !seenCombinations.has(uniqueKey)) {
+          seenCombinations.add(uniqueKey);
+          matches.push({
+            entry: entry,
+            score: 1,
+            matchedWord: word,
+          });
+          return;
+        }
+
+        // Clean the word from punctuation for fuzzy matching
+        var cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+        if (!cleanWord || cleanWord.length <= 1) return; // Skip if cleaned word is too short
+
         // For short words (2-3 chars), use stricter matching
         if (cleanWord.length <= 3) {
           // Only match if it's a complete word match or surrounded by word boundaries
           const regex = new RegExp(`\\b${cleanWord}\\b`, "i");
           if (
             regex.test(entry.source) &&
-            !matches.some(function (m) {
-              return m.entry.source === entry.source;
-            })
+            !seenCombinations.has(uniqueKey)
           ) {
+            seenCombinations.add(uniqueKey);
             matches.push({
               entry: entry,
               score: 1,
@@ -1180,10 +1276,9 @@ function TranslatorTool() {
           );
           if (
             score >= CONFIG.fuzzyThreshold &&
-            !matches.some(function (m) {
-              return m.entry.source === entry.source;
-            })
+            !seenCombinations.has(uniqueKey)
           ) {
+            seenCombinations.add(uniqueKey);
             matches.push({
               entry: entry,
               score: score,
@@ -1194,8 +1289,14 @@ function TranslatorTool() {
       });
     });
 
+    // Sort matches by score first, then by category
     matches.sort(function (a, b) {
       if (b.score === a.score) {
+        // If scores are equal, sort by category presence (entries with category come first)
+        if (!!a.entry.category !== !!b.entry.category) {
+          return a.entry.category ? -1 : 1;
+        }
+        // If both have or don't have categories, sort by matched word length
         return b.matchedWord.length - a.matchedWord.length;
       }
       return b.score - a.score;
@@ -1210,7 +1311,7 @@ function TranslatorTool() {
     if (!query || query.length <= 1) {
       updateResults("");
       lastSearchedText = "";
-      checkForEditorContent();
+      checkForEditorContent(true);
       return;
     }
 
@@ -1360,19 +1461,7 @@ function TranslatorTool() {
 
         // Add category chip first if in note column
         if (!isSource && !isTarget && category) {
-          var chip = document.createElement("div");
-          const color = generateColorForCategory(category);
-          chip.style.backgroundColor = color;
-          chip.style.color = "white";
-          chip.style.padding = "1px 6px";
-          chip.style.borderRadius = "10px";
-          chip.style.fontSize = "10px";
-          chip.style.whiteSpace = "nowrap";
-          chip.style.fontWeight = "500";
-          chip.style.opacity = "0.9";
-          chip.style.width = "fit-content";
-          chip.textContent = category;
-          container.appendChild(chip);
+          container.innerHTML += createCategoryChip(category);
         }
 
         // Add main text
@@ -1504,9 +1593,18 @@ function TranslatorTool() {
                   if (csvResponse.status === 200) {
                     try {
                       const newData = parseCSVToArray(csvResponse.responseText);
-                      const needsDataUpdate =
-                        JSON.stringify(translationData) !==
-                        JSON.stringify(newData);
+
+                      function isEqual(obj1, obj2) {
+                        return JSON.stringify(obj1) === JSON.stringify(obj2);
+                      }
+
+                      const needsDataUpdate = !isEqual(translationData, newData);
+
+                      log("debug", "Translation data", {
+                        translationData: JSON.stringify(translationData),
+                        newData: JSON.stringify(newData),
+                      });
+
                       log("info", "CSV check complete", {
                         needsUpdate: needsDataUpdate,
                         currentEntries: translationData.length,
@@ -1635,7 +1733,7 @@ function TranslatorTool() {
       updateLink.style.color = "#F44336";
       showUpdateNotification(true, false);
     } else if (needsDataUpdate) {
-      updateLink.textContent = "New translations available!";
+      updateLink.textContent = "New translations applied!";
       updateLink.style.color = "#F44336";
       showUpdateNotification(false, true);
 
@@ -1649,7 +1747,7 @@ function TranslatorTool() {
           updateLink.style.color = "#4CAF50";
           // Trigger content check after updating data
           setTimeout(() => {
-            checkForEditorContent();
+            checkForEditorContent(true);
           }, 500);
           setTimeout(() => {
             updateLink.textContent = "Check for updates";
