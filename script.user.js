@@ -181,7 +181,7 @@ function TranslatorTool() {
       "Instance Type": "#d4edbc",
       "Avatar Performance Rank": "#ffc8aa",
       "VRChat Specific": "#bfe1f6",
-      "Common": "#e6e6e6",
+      Common: "#e6e6e6",
     };
 
     if (predefinedColors[category]) {
@@ -203,12 +203,12 @@ function TranslatorTool() {
   function isColorBright(color) {
     // Convert hex to RGB
     let r, g, b;
-    if (color.startsWith('#')) {
-      const hex = color.replace('#', '');
+    if (color.startsWith("#")) {
+      const hex = color.replace("#", "");
       r = parseInt(hex.substr(0, 2), 16);
       g = parseInt(hex.substr(2, 2), 16);
       b = parseInt(hex.substr(4, 2), 16);
-    } else if (color.startsWith('hsl')) {
+    } else if (color.startsWith("hsl")) {
       // Convert HSL to RGB
       const matches = color.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
       if (matches) {
@@ -222,17 +222,17 @@ function TranslatorTool() {
           const hue2rgb = (p, q, t) => {
             if (t < 0) t += 1;
             if (t > 1) t -= 1;
-            if (t < 1/6) return p + (q - p) * 6 * t;
-            if (t < 1/2) return q;
-            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
             return p;
           };
 
           const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
           const p = 2 * l - q;
-          r = hue2rgb(p, q, h + 1/3) * 255;
+          r = hue2rgb(p, q, h + 1 / 3) * 255;
           g = hue2rgb(p, q, h) * 255;
-          b = hue2rgb(p, q, h - 1/3) * 255;
+          b = hue2rgb(p, q, h - 1 / 3) * 255;
         }
       } else {
         r = g = b = 128; // Fallback to gray if parsing fails
@@ -247,12 +247,16 @@ function TranslatorTool() {
     const bb = b / 255;
 
     // Calculate relative luminance (WCAG 2.0)
-    const luminance = 0.2126 * (rr <= 0.03928 ? rr / 12.92 : Math.pow((rr + 0.055) / 1.055, 2.4))
-                   + 0.7152 * (gg <= 0.03928 ? gg / 12.92 : Math.pow((gg + 0.055) / 1.055, 2.4))
-                   + 0.0722 * (bb <= 0.03928 ? bb / 12.92 : Math.pow((bb + 0.055) / 1.055, 2.4));
+    const luminance =
+      0.2126 *
+        (rr <= 0.03928 ? rr / 12.92 : Math.pow((rr + 0.055) / 1.055, 2.4)) +
+      0.7152 *
+        (gg <= 0.03928 ? gg / 12.92 : Math.pow((gg + 0.055) / 1.055, 2.4)) +
+      0.0722 *
+        (bb <= 0.03928 ? bb / 12.92 : Math.pow((bb + 0.055) / 1.055, 2.4));
 
     // Calculate YIQ
-    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
 
     // Combine both methods
     // For pastel colors (high luminance but moderate YIQ)
@@ -1058,7 +1062,7 @@ function TranslatorTool() {
   function fetchRemoteCSV(url) {
     log("info", "Fetching remote CSV from", { url: url });
     GM_xmlhttpRequest({
-      method: "GET", 
+      method: "GET",
       url: url,
       onload: function (response) {
         if (response.status === 200) {
@@ -1066,23 +1070,24 @@ function TranslatorTool() {
             const newData = parseCSVToArray(response.responseText);
             translationData = newData;
             currentCSVSource = url;
-            
+
             log("debug", "Translation data", {
               translationData: JSON.stringify(translationData),
-              newData: JSON.stringify(newData)
+              newData: JSON.stringify(newData),
             });
 
             log("success", "Successfully loaded remote CSV", {
-              entries: translationData.length
+              entries: translationData.length,
             });
-
           } catch (csvError) {
             log("error", "Error parsing CSV data", csvError);
-            updateResults("Error parsing CSV data. Please check the file format and try again.");
+            updateResults(
+              "Error parsing CSV data. Please check the file format and try again."
+            );
           }
         } else {
           log("error", "Failed to fetch remote CSV", {
-            status: response.status
+            status: response.status,
           });
           updateResults(
             "Failed to fetch remote CSV. Please check the URL and try again."
@@ -1094,7 +1099,7 @@ function TranslatorTool() {
         updateResults(
           "Error fetching remote CSV. Please check your connection and try again."
         );
-      }
+      },
     });
   }
 
@@ -1236,10 +1241,15 @@ function TranslatorTool() {
 
       // First try exact match with punctuation
       translationData.forEach(function (entry) {
-        const uniqueKey = `${entry.source.toLowerCase()}_${entry.category || 'default'}`;
-        
+        const uniqueKey = `${entry.source.toLowerCase()}_${
+          entry.category || "default"
+        }`;
+
         // Exact match (case-insensitive)
-        if (entry.source.toLowerCase() === word.toLowerCase() && !seenCombinations.has(uniqueKey)) {
+        if (
+          entry.source.toLowerCase() === word.toLowerCase() &&
+          !seenCombinations.has(uniqueKey)
+        ) {
           seenCombinations.add(uniqueKey);
           matches.push({
             entry: entry,
@@ -1257,10 +1267,7 @@ function TranslatorTool() {
         if (cleanWord.length <= 3) {
           // Only match if it's a complete word match or surrounded by word boundaries
           const regex = new RegExp(`\\b${cleanWord}\\b`, "i");
-          if (
-            regex.test(entry.source) &&
-            !seenCombinations.has(uniqueKey)
-          ) {
+          if (regex.test(entry.source) && !seenCombinations.has(uniqueKey)) {
             seenCombinations.add(uniqueKey);
             matches.push({
               entry: entry,
@@ -1598,7 +1605,10 @@ function TranslatorTool() {
                         return JSON.stringify(obj1) === JSON.stringify(obj2);
                       }
 
-                      const needsDataUpdate = !isEqual(translationData, newData);
+                      const needsDataUpdate = !isEqual(
+                        translationData,
+                        newData
+                      );
 
                       log("debug", "Translation data", {
                         translationData: JSON.stringify(translationData),
