@@ -1,129 +1,147 @@
-English,Thai,Note / Context (มีตรงไหนผิด/ไม่ Update กับใน Discord ก็ Comment ได้นะคะ)
-(x) are now disabled,เปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า
-(x) are now enabled ,ปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า
-(x) disabled,ปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า
-(x) enabled,เปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า
-Accessibility,การช่วยการเข้าถึง,
-Action Menu,เมนูคำสั่ง,
-AFK,AFK,
-Ago,ที่แล้ว,"Relative time, ใช้บอกเวลาที่ผ่านไป เช่น 5 ชั่วโมงที่แล้ว"
-Animator,,Awaiting vote ศัพท์ทางเทคนิค Unity
-Auto,อัตโนมัติ,Mostly on camera settings
-Avatar,อวาตาร์,
-Avatar Culling,การซ่อนอวาตาร์,Culling เป็น ศัพท์ทางเทคนิค
-Badge,เหรียญตรา,
-Binding,ตั้งค่าปุ่ม,
-Block,บล็อก,
-Border,ขอบ,
-Browse,เรียกดู,
-Calibrate,ตั้งศูนย์,
-Captcha,แคปช่า,
-Change,ปรับ,
-Chat,แชท,
-Chatbox,ช่องแชท, 
-Click,คลิก,
-Colliders,คอลไลเดอร์,ศัพท์ทางเทคนิค Unity
-Debug,ดีบัก,ศัพท์ทางเทคนิค Dev
-Decrease,ลด,
-Default,ค่าเริ่มต้น,
-Dismiss Notification,เพิกเฉยการแจ้งเตือน,
-Drift,ดริฟท์,
-Dynamic,ไดนามิก,
-Dynamic Bone,,Awaiting vote ศัพท์ทางเทคนิค Unity
-Earmuffs,ปิดเสียงรอบข้าง,
-Email,อีเมล,
-Emojis,อิโมจิ,
-Error,เกิดข้อผิดพลาด,
-Excellent,ยอดเยี่ยม,Avatar performance ranks
-Failed,ล้มเหลว,
-Fallback,ตัวสำรอง,
-Favorite,ชื่นชอบ,
-Favorites,รายการโปรด,
-FBT,ฟูลบอดี้แทร็กกิ้ง,
-Feature,ฟีเจอร์,
-Friends,เพื่อน,Instance types
-Friends+,เพื่อน+,Instance types
-Full body Tracking,ฟูลบอดี้แทร็กกิ้ง,
-Gallery,คลังภาพ,
-Gestures,ท่าทาง,
-Good,ดี,Avatar performance ranks
-Goodbye,ลาก่อน,
-Group,กลุ่ม,Instance types
-Group Public,กลุ่มสาธารณะ,Instance types
-Group+,กลุ่ม+,Instance types
-Hang out,ไปสังสรรค์,
-Haptics,การสัมผัส,
-Headset,เฮดเซ็ท,
-Hello,สวัสดี,
-Horizontal Adjust,การปรับแนวระนาบ,
-Hub,,Awaiting vote
-Icon,ไอคอน,
-ID,ไอดี,
-Image,ภาพ,
-Impostor,อิมพอสเตอร์,Avatar feature
-Increase,เพิ่ม,
-Instance,อินสแตนซ์,
-Interactions,การโต้ตอบ,
-Invite,เชิญเท่านั้น,Instance types
-Invite+,เชิญ+,Instance types
-Join,เข้าร่วม,
-Jump,ข้าม,ใช้ใน UI
-Known User,ผู้ใช้ที่รู้จัก,Trust ranks
-Loading,กำลังโหลด,
-Master,หัวห้อง,Instance owner
-Medium,ปานกลาง,Avatar performance ranks
-Meta Quest,Meta Quest,
-Mobile,อุปกรณ์พกพา,
-Motion Sickness,อาการวิงเวียน,
-Nameplate,ป้ายชื่อ,
-New User,ผู้ใช้ใหม่,Trust ranks
-No,ไม่,
-Nuisance,ตัวป่วน,Trust ranks
-Opacity,,Awaiting vote
-Override,ตั้งค่าทับซ้อน,
-Particles,อนุภาค,
-PC,พีซี,
-Permissions,สิทธิ์,
-Persistence,ข้อมูลจัดเก็บ,
-Photo,รูป,
-Platforms,แพลตฟอร์ม,
-Please,กรุณา,
-Polygons,โพลิกอน,ศัพท์ทางเทคนิค
-Poor,แย่,Avatar performance ranks
-Portal,ประตูมิติ,
-Profile,โปรไฟล์,
-Public,สาธารณะ,Instance types
-Push To Talk,กดเพื่อคุย,
-Quest,Quest,
-Rank,ยศ,
-Remove,"ลบ, นำออก",ขึ้นอยู่กับบริบท
-Rendering,การเรนเดอร์,
-Report, รายงาน,
-Require,จำเป็น,ใช้ใน UI
-Restart,รีสตาร์ท,
-Send Boop,สะกิด,
-Share,แชร์,
-Shield Level,ระดับโล่,
-Social,สังคม,
-Steam,Steam,
-Steam Overlay,Steam Overlay,
-SteamVR,SteamVR,
-Strict,เคร่งครัด,
-Surface,พื้นผิว,
-Thank you,ขอบคุณ,
-Tracking,แทร็กกิ้ง,
-Transform,,Awaiting vote ศัพท์ทางเทคนิค Unity
-Trusted User,ผู้ใช้ที่เชื่อถือได้,Trust ranks
-Tunneling,ระบบลดการมองเห็น,
-Type,รูปแบบ,ขึ้นอยู่กับบริบท
-UI,UI,
-Unfavorite,"ยกเลิกรายการโปรด, ลบจากรายการโปรด",Depends on context
-Update,อัปเดต,
-User,ผู้ใช้,Trust ranks
-Version,เวอร์ชัน,
-Very Poor,แย่มาก,Avatar performance ranks
-Visitor,ผู้เยี่ยมชม,Trust Ranks
-VRC+,VRC+,
-VRChat,VRChat,
-World,โลก,
-Yes,ใช่,
+English,Thai,Note / Context (มีตรงไหนผิด/ไม่ Update กับใน Discord ก็ Comment ได้นะคะ),Category
+(x) are now disabled,ปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
+(x) are now enabled ,เปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
+(x) disabled,ปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
+(x) enabled,เปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
+Accessibility,การช่วยการเข้าถึง,,
+Action Menu,เมนูคำสั่ง,,
+AFK,AFK,,
+Ago,ที่แล้ว,"Relative time, ใช้บอกเวลาที่ผ่านไป เช่น 5 ชั่วโมงที่แล้ว",
+Animator,อนิเมเตอร์,,Unity / 3D
+Auto,อัตโนมัติ,Mostly on camera settings,
+Avatar,อวาตาร์,,
+Avatar Culling,การซ่อนอวาตาร์,Culling เป็น ศัพท์ทางเทคนิค,
+Badge,เหรียญตรา,,VRChat Specific
+Binding,ตั้งค่าปุ่ม,,
+Block,บล็อก,,
+Border,ขอบ,,
+Browse,เรียกดู,,
+Calibrate,ตั้งศูนย์,,
+Captcha,แคปช่า,,
+Change,ปรับ,,
+Chat,แชท,,
+Chatbox,ช่องแชท, ,
+Click,คลิก,,
+Colliders,คอลไลเดอร์,,Unity / 3D
+Debug,ดีบัก,ศัพท์ทางเทคนิค Dev,
+Decrease,ลด,,
+Default,ค่าเริ่มต้น,,
+Dismiss Notification,เพิกเฉยการแจ้งเตือน,,
+Drift,ดริฟท์,,
+Dynamic,ไดนามิก,,
+Dynamic Bone,ไดนามิกโบน,,Unity / 3D
+Earmuffs,ปิดเสียงรอบข้าง,,
+Email,อีเมล,,
+Emojis,อิโมจิ,"""อิโมจิ"" ref IOS",
+Error,เกิดข้อผิดพลาด,,
+Excellent,ยอดเยี่ยม,,Avatar Performance Rank
+Failed,ล้มเหลว,,
+Fallback,ตัวสำรอง,,
+Favorite,ชื่นชอบ,,
+Favorites,รายการโปรด,,
+FBT,ฟูลบอดี้แทร็กกิ้ง,,
+Feature,ฟีเจอร์,,
+Friends,เพื่อน,,Instance Type
+Friends+,เพื่อน+,,Instance Type
+Full body Tracking,ฟูลบอดี้แทร็กกิ้ง,,
+Gallery,คลังภาพ     คลังรูปภาพ,,
+Gestures,ท่าทาง,,
+Good,ดี,,Avatar Performance Rank
+Goodbye,ลาก่อน,,
+Group,กลุ่ม,,Instance Type
+Group Public,กลุ่มสาธารณะ,,Instance Type
+Group+,กลุ่ม+,,Instance Type
+Hang out,ไปสังสรรค์,,
+Haptics,การสัมผัส,,
+Headset,เฮดเซ็ท,,
+Hello,สวัสดี,,
+Horizontal Adjust,การปรับแนวระนาบ,,
+Hub,ศูนย์รวม,,
+Icon,ไอคอน,,
+ID,ไอดี,,
+Image,ภาพ,,
+Impostor,อิมพอสเตอร์,Avatar feature,VRChat Specific
+Increase,เพิ่ม,,
+Instance,อินสแตนซ์,,VRChat Specific
+Interactions,การโต้ตอบ,,
+Invite,เชิญเท่านั้น,,Instance Type
+Invite+,เชิญ+,,Instance Type
+Join,เข้าร่วม,,
+Jump,ข้าม,,UI
+Known User,ผู้ใช้ที่รู้จัก,,Trust Rank
+Loading,กำลังโหลด,,
+Master,หัวห้อง,Instance owner,
+Medium,ปานกลาง,,Avatar Performance Rank
+Meta Quest,Meta Quest,,
+Mobile,อุปกรณ์พกพา,,
+Motion Sickness,อาการวิงเวียน,,
+Nameplate,ป้ายชื่อ,,
+New User,ผู้ใช้ใหม่,,Trust Rank
+No,ไม่,,
+Nuisance,ตัวป่วน,,Trust Rank
+Opacity,ความโปร่งแสง,,UI
+Override,ตั้งค่าทับซ้อน,,
+Particles,อนุภาค,,Unity / 3D
+PC,พีซี,,
+Permissions,สิทธิ์,,
+Persistence,ข้อมูลจัดเก็บ,,
+Photo,รูป,,
+Platforms,แพลตฟอร์ม,,
+Please,กรุณา,,
+Polygons,โพลิกอน,,Unity / 3D
+Poor,แย่,,Avatar Performance Rank
+Portal,ประตูมิติ,,VRChat Specific
+Profile,โปรไฟล์,,
+Public,สาธารณะ,,Instance Type
+Push To Talk,กดเพื่อคุย,,
+Quest,Quest,,
+Rank,ยศ,ปรับเปลี่ยนตามบริบท,
+Remove,"ลบ, นำออก",ขึ้นอยู่กับบริบท,
+Rendering,การเรนเดอร์,,Unity / 3D
+Report, รายงาน,,
+Require,จำเป็น,ใช้ใน UI,
+Restart,รีสตาร์ท,,
+Send Boop,สะกิด,,
+Share,แชร์,,
+Shield Level,ระดับโล่,,
+Social,สังคม,,
+Steam,Steam,,
+Steam Overlay,Steam Overlay,,
+SteamVR,SteamVR,,
+Strict,เคร่งครัด,,
+Surface,พื้นผิว,,
+Thank you,ขอบคุณ,,
+Tracking,แทร็กกิ้ง,,
+Transform,ทรานฟอร์ม,,Unity / 3D
+Trusted User,ผู้ใช้ที่เชื่อถือได้,,Trust Rank
+Tunneling,ระบบลดการมองเห็น,Vision tunneling,
+Type,รูปแบบ,ขึ้นอยู่กับบริบท,
+UI,UI,,UI
+Unfavorite,"ยกเลิกรายการโปรด, ลบจากรายการโปรด",Depends on context,
+Update,อัปเดต,,
+User,ผู้ใช้,,Trust Rank
+Version,เวอร์ชัน,,
+Very Poor,แย่มาก,,Avatar Performance Rank
+Visitor,ผู้เยี่ยมชม,,Trust Rank
+VRC+,VRC+,,VRChat Specific
+VRChat,VRChat,,VRChat Specific
+World,โลก,,VRChat Specific
+Yes,ใช่,,
+Noise,เสียงรบกวน,,
+Noise Suppression,ตัดเสียงเสียงรบกวน,,
+Quick link,ลิงก์ด่วน,,
+Actions,การกระทำ,,
+Quick Actions,การกระทำด่วน,,
+?,"ไหม?, หรือไม่?",ให้เลือกใช้ขึ้นอยู่กับบริบท เช่น ต้องการบันทึกอีโมจิไหม? ต้องการลบหรือไม่?,
+Triangles,ไทรแองเกิล,บริบทคล้าย Polygon เลยทับศัพท์ให้เหมือนกัน,Unity / 3D
+Double Click,คลิกสองครั้ง,,UI
+Confetti,พลุกระดาษ,,
+VRChat+,VRC+,Pending confirmation,VRChat Specific
+Selfie Expression,แสดงสีหน้าด้วยเซลฟี่,,
+Finger Tracking,,Pending vote,
+Face Tracking,,Pending vote,
+Controller,อุปกรณ์ควบคุม,,
+Reset,รีเซ็ต,,
+Community Labs,ห้องทดลองชุมชน,,
+Locomotion,การเคลื่อนไหว,,
+Test,Test,,
