@@ -136,7 +136,7 @@ Quick Actions,การกระทำด่วน,,
 Triangles,ไทรแองเกิล,บริบทคล้าย Polygon เลยทับศัพท์ให้เหมือนกัน,Unity / 3D
 Double Click,คลิกสองครั้ง,,UI
 Confetti,พลุกระดาษ,,
-VRChat+,VRC+,Pending confirmation,VRChat Specific
+VRChat+,VRC+,Pending confirmation from VRChat,VRChat Specific
 Selfie Expression,แสดงสีหน้าด้วยเซลฟี่,,
 Finger Tracking,,Pending vote,
 Face Tracking,,Pending vote,
@@ -151,3 +151,6 @@ Skinned Mesh,สกินด์เมช,,Unity / 3D
 Cloth,,"Will open vote, this is debatable",Unity / 3D
 PhysBone,ฟิสิกส์โบน,,Unity / 3D
 Mesh,เมช,,Unity / 3D
+Renderer,เรนเดอร์เรอร์,,Unity / 3D
+Deformed,ปรับรูป,,
+Performance,ประสิทธิภาพ,,
