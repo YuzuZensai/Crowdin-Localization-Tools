@@ -44,7 +44,7 @@ Feature,ฟีเจอร์,,Common
 Friends,เพื่อน,,Instance Type
 Friends+,เพื่อน+,,Instance Type
 Full body Tracking,ฟูลบอดี้แทร็กกิ้ง,,
-Gallery,คลังภาพ     คลังรูปภาพ,,
+Gallery,คลังรูปภาพ,,
 Gestures,ท่าทาง,,
 Good,ดี,,Avatar Performance Rank
 Goodbye,ลาก่อน,,Common
@@ -156,10 +156,10 @@ Deformed,ปรับรูป,,Unity / 3D
 Performance,ประสิทธิภาพ,,Common
 User,ผู้ใช้,,Common
 Texture,เท็กซ์เจอร์,,Unity / 3D
-Proximity,,Pending vote,
+Proximity,ความใกล้เคียง,,
 Collision,,Pending vote,
-Discrete,,Pending vote,Unity / 3D
-Component,คอมโพเนนต์,Pending vote,Unity / 3D
+Discrete,ไม่ต่อเนื่อง,,Unity / 3D
+Component,คอมโพเนนต์,,Unity / 3D
 Light,แสง,"When used with component, should be written as คอมโพเนนต์แสง",Unity / 3D
 Audio Source,ออดิโอซอร์ซ,,Unity / 3D
 Vertex,เวอร์เท็กซ์,,Unity / 3D
@@ -167,4 +167,5 @@ Vertices,เวอร์เท็กซ์,"Might open vote, Plural form of vert
 Trail,เทรล,,Unity / 3D
 Material,เมททีเรียล,,Unity / 3D
 Material Slots,ช่องเมททีเรียล,,Unity / 3D
-Something went wrong,เกิดข้อผิดพลาดบางประการ,When used without any explanation why the error happened,
+Something went wrong,เกิดข้อผิดพลาดบางประการ,When used without any explanation why the error happened,VRChat Specific
+Print,พรินต์,,
