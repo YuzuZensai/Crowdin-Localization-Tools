@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Crowdin Localization Tools
 // @namespace    https://yuzu.kirameki.cafe/
-// @version      1.1.0
+// @version      1.1.1
 // @description  A tool for translating Crowdin projects using a CSV file
 // @author       Yuzu (YuzuZensai)
 // @match        https://crowdin.com/editor/*
@@ -45,7 +45,7 @@ const CONFIG = {
   fuzzyThreshold: 0.7,
 
   metadata: {
-    version: "1.1.0",
+    version: "1.1.1",
     repository: "https://github.com/YuzuZensai/Crowdin-Localization-Tools",
     authorGithub: "https://github.com/YuzuZensai",
   },
@@ -1547,6 +1547,85 @@ function TranslatorTool() {
     tableContainer.appendChild(table);
     wrapper.appendChild(tableContainer);
 
+    // Copy label at bottom
+    var copyLabelContainer = document.createElement("div");
+    copyLabelContainer.style.padding = "4px 8px";
+    copyLabelContainer.style.backgroundColor = "#f8f9fa";
+    copyLabelContainer.style.borderTop = "1px solid #e0e0e0";
+    copyLabelContainer.style.display = "flex";
+    copyLabelContainer.style.alignItems = "center";
+    copyLabelContainer.style.gap = "4px";
+    copyLabelContainer.style.fontSize = "11px";
+    copyLabelContainer.style.color = "#666";
+
+    var matchCount = document.createElement("span");
+    matchCount.textContent = `${matches.length} matches`;
+    copyLabelContainer.appendChild(matchCount);
+
+    var separator = document.createElement("span");
+    separator.textContent = "•";
+    separator.style.color = "#ccc";
+    copyLabelContainer.appendChild(separator);
+
+    var copyButton = document.createElement("span");
+    copyButton.textContent = "Copy as CSV";
+    copyButton.style.color = "#1a73e8";
+    copyButton.style.cursor = "pointer";
+    copyButton.style.transition = "color 0.2s";
+
+    copyButton.addEventListener("mouseover", function () {
+      this.style.color = "#1557b0";
+      this.style.textDecoration = "underline";
+    });
+
+    copyButton.addEventListener("mouseout", function () {
+      this.style.color = "#1a73e8";
+      this.style.textDecoration = "none";
+    });
+
+    copyButton.addEventListener("click", function () {
+      let csvContent = "Source,Target,Note,Category\n";
+      matches.forEach(function (match) {
+        const escapeField = (field) => {
+          if (!field) return "";
+          const escaped = field.replace(/"/g, '""');
+          return `"${escaped}"`;
+        };
+
+        csvContent +=
+          [
+            escapeField(match.entry.source),
+            escapeField(match.entry.target),
+            escapeField(match.entry.note),
+            escapeField(match.entry.category),
+          ].join(",") + "\n";
+      });
+
+      navigator.clipboard
+        .writeText(csvContent)
+        .then(() => {
+          const originalText = copyButton.textContent;
+          copyButton.textContent = "copied!";
+          copyButton.style.color = "#4CAF50";
+          setTimeout(() => {
+            copyButton.textContent = originalText;
+            copyButton.style.color = "#1a73e8";
+          }, 2000);
+        })
+        .catch((err) => {
+          log("error", "Failed to copy CSV", err);
+          copyButton.textContent = "failed to copy";
+          copyButton.style.color = "#F44336";
+          setTimeout(() => {
+            copyButton.textContent = "copy as CSV";
+            copyButton.style.color = "#1a73e8";
+          }, 2000);
+        });
+    });
+
+    copyLabelContainer.appendChild(copyButton);
+    wrapper.appendChild(copyLabelContainer);
+
     resultsDiv.innerHTML = "";
     resultsDiv.appendChild(wrapper);
     log("success", "Updated results panel with table layout");
@@ -1675,7 +1754,7 @@ function TranslatorTool() {
           log("error", "Failed to check for updates", {
             status: response.status,
           });
-          updateLink.textContent = "Failed to check updates";
+          updateLink.textContent = "Error checking for updates";
           updateLink.style.color = "#F44336";
         }
       },
