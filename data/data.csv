@@ -81,7 +81,7 @@ No,ไม่,,
 Nuisance,ตัวป่วน,,Trust Rank
 Opacity,ความโปร่งแสง,,UI
 Override,ตั้งค่าทับซ้อน,,
-Particles,อนุภาค,,Unity / 3D
+Particles,พาร์ทิเคิล,,Unity / 3D
 PC,พีซี,,
 Permissions,สิทธิ์,,
 Persistence,ข้อมูลจัดเก็บ,,
@@ -156,3 +156,6 @@ Deformed,ปรับรูป,,
 Performance,ประสิทธิภาพ,,
 User,ผู้ใช้,,Common
 Texture,เท็กซ์เจอร์,,Unity / 3D
+Proximity,,Pending vote,
+Collision,,Pending vote,
+Discrete,,Pending vote,
