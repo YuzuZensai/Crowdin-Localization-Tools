@@ -5,61 +5,61 @@ English,Thai,Note / Context (มีตรงไหนผิด/ไม่ Update 
 (x) enabled,เปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
 Accessibility,การช่วยการเข้าถึง,,
 Action Menu,เมนูคำสั่ง,,
-AFK,AFK,,
-Ago,ที่แล้ว,"Relative time, ใช้บอกเวลาที่ผ่านไป เช่น 5 ชั่วโมงที่แล้ว",
+AFK,AFK,,Common
+Ago,ที่แล้ว,"Relative time, ใช้บอกเวลาที่ผ่านไป เช่น 5 ชั่วโมงที่แล้ว",Common
 Animator,อนิเมเตอร์,,Unity / 3D
 Auto,อัตโนมัติ,Mostly on camera settings,
-Avatar,อวาตาร์,,
+Avatar,อวาตาร์,,VRChat Specific
 Avatar Culling,การซ่อนอวาตาร์,Culling เป็น ศัพท์ทางเทคนิค,
 Badge,เหรียญตรา,,VRChat Specific
 Binding,ตั้งค่าปุ่ม,,
-Block,บล็อก,,
+Block,บล็อก,Social feature,Common
 Border,ขอบ,,
 Browse,เรียกดู,,
 Calibrate,ตั้งศูนย์,,
-Captcha,แคปช่า,,
+Captcha,แคปช่า,,Common
 Change,ปรับ,,
-Chat,แชท,,
+Chat,แชท,,Common
 Chatbox,ช่องแชท, ,
 Click,คลิก,,
 Colliders,คอลไลเดอร์,,Unity / 3D
 Debug,ดีบัก,ศัพท์ทางเทคนิค Dev,
 Decrease,ลด,,
-Default,ค่าเริ่มต้น,,
+Default,ค่าเริ่มต้น,,Common
 Dismiss Notification,เพิกเฉยการแจ้งเตือน,,
 Drift,ดริฟท์,,
 Dynamic,ไดนามิก,,
 Dynamic Bone,ไดนามิกโบน,,Unity / 3D
 Earmuffs,ปิดเสียงรอบข้าง,,
-Email,อีเมล,,
-Emojis,อิโมจิ,"""อิโมจิ"" ref IOS",
+Email,อีเมล,,Common
+Emojis,อิโมจิ,"""อิโมจิ"" ref IOS",Common
 Error,เกิดข้อผิดพลาด,,
 Excellent,ยอดเยี่ยม,,Avatar Performance Rank
 Failed,ล้มเหลว,,
 Fallback,ตัวสำรอง,,
-Favorite,ชื่นชอบ,,
-Favorites,รายการโปรด,,
+Favorite,ชื่นชอบ,,Common
+Favorites,รายการโปรด,,Common
 FBT,ฟูลบอดี้แทร็กกิ้ง,,
-Feature,ฟีเจอร์,,
+Feature,ฟีเจอร์,,Common
 Friends,เพื่อน,,Instance Type
 Friends+,เพื่อน+,,Instance Type
 Full body Tracking,ฟูลบอดี้แทร็กกิ้ง,,
 Gallery,คลังภาพ     คลังรูปภาพ,,
 Gestures,ท่าทาง,,
 Good,ดี,,Avatar Performance Rank
-Goodbye,ลาก่อน,,
+Goodbye,ลาก่อน,,Common
 Group,กลุ่ม,,Instance Type
 Group Public,กลุ่มสาธารณะ,,Instance Type
 Group+,กลุ่ม+,,Instance Type
 Hang out,ไปสังสรรค์,,
 Haptics,การสัมผัส,,
 Headset,เฮดเซ็ท,,
-Hello,สวัสดี,,
+Hello,สวัสดี,,Common
 Horizontal Adjust,การปรับแนวระนาบ,,
-Hub,ศูนย์รวม,,
+Hub,ศูนย์รวม,,Common
 Icon,ไอคอน,,
 ID,ไอดี,,
-Image,ภาพ,,
+Image,ภาพ,,Common
 Impostor,อิมพอสเตอร์,Avatar feature,VRChat Specific
 Increase,เพิ่ม,,
 Instance,อินสแตนซ์,,VRChat Specific
@@ -69,25 +69,25 @@ Invite+,เชิญ+,,Instance Type
 Join,เข้าร่วม,,
 Jump,ข้าม,,UI
 Known User,ผู้ใช้ที่รู้จัก,,Trust Rank
-Loading,กำลังโหลด,,
+Loading,กำลังโหลด,,Common
 Master,หัวห้อง,Instance owner,
 Medium,ปานกลาง,,Avatar Performance Rank
 Meta Quest,Meta Quest,,
 Mobile,อุปกรณ์พกพา,,
 Motion Sickness,อาการวิงเวียน,,
-Nameplate,ป้ายชื่อ,,
+Nameplate,ป้ายชื่อ,,VRChat Specific
 New User,ผู้ใช้ใหม่,,Trust Rank
-No,ไม่,,
+No,ไม่,,Common
 Nuisance,ตัวป่วน,,Trust Rank
 Opacity,ความโปร่งแสง,,UI
 Override,ตั้งค่าทับซ้อน,,
 Particles,พาร์ทิเคิล,,Unity / 3D
 PC,พีซี,,
-Permissions,สิทธิ์,,
+Permissions,สิทธิ์,,Common
 Persistence,ข้อมูลจัดเก็บ,,
-Photo,รูป,,
+Photo,รูป,,Common
 Platforms,แพลตฟอร์ม,,
-Please,กรุณา,,
+Please,กรุณา,,Common
 Polygons,โพลิกอน,,Unity / 3D
 Poor,แย่,,Avatar Performance Rank
 Portal,ประตูมิติ,,VRChat Specific
@@ -96,37 +96,37 @@ Public,สาธารณะ,,Instance Type
 Push To Talk,กดเพื่อคุย,,
 Quest,Quest,,
 Rank,ยศ,ปรับเปลี่ยนตามบริบท,
-Remove,"ลบ, นำออก",ขึ้นอยู่กับบริบท,
+Remove,"ลบ, นำออก",ขึ้นอยู่กับบริบท,Common
 Rendering,การเรนเดอร์,,Unity / 3D
 Report, รายงาน,,
 Require,จำเป็น,ใช้ใน UI,
-Restart,รีสตาร์ท,,
+Restart,รีสตาร์ท,,Common
 Send Boop,สะกิด,,
-Share,แชร์,,
+Share,แชร์,,Common
 Shield Level,ระดับโล่,,
-Social,สังคม,,
+Social,สังคม,,Common
 Steam,Steam,,
 Steam Overlay,Steam Overlay,,
 SteamVR,SteamVR,,
 Strict,เคร่งครัด,,
-Surface,พื้นผิว,,
-Thank you,ขอบคุณ,,
+Surface,พื้นผิว,,Common
+Thank you,ขอบคุณ,,Common
 Tracking,แทร็กกิ้ง,,
 Transform,ทรานฟอร์ม,,Unity / 3D
 Trusted User,ผู้ใช้ที่เชื่อถือได้,,Trust Rank
 Tunneling,ระบบลดการมองเห็น,Vision tunneling,
 Type,รูปแบบ,ขึ้นอยู่กับบริบท,
 UI,UI,,UI
-Unfavorite,"ยกเลิกรายการโปรด, ลบจากรายการโปรด",Depends on context,
-Update,อัปเดต,,
+Unfavorite,"ยกเลิกรายการโปรด, ลบจากรายการโปรด",Depends on context,Common
+Update,อัปเดต,,Common
 User,ผู้ใช้,,Trust Rank
-Version,เวอร์ชัน,,
+Version,เวอร์ชัน,,Common
 Very Poor,แย่มาก,,Avatar Performance Rank
 Visitor,ผู้เยี่ยมชม,,Trust Rank
 VRC+,VRC+,,VRChat Specific
 VRChat,VRChat,,VRChat Specific
 World,โลก,,VRChat Specific
-Yes,ใช่,,
+Yes,ใช่,,Common
 Noise,เสียงรบกวน,,
 Noise Suppression,ตัดเสียงเสียงรบกวน,,
 Quick link,ลิงก์ด่วน,,
@@ -141,8 +141,8 @@ Selfie Expression,แสดงสีหน้าด้วยเซลฟี่,,
 Finger Tracking,,Pending vote,
 Face Tracking,,Pending vote,
 Controller,อุปกรณ์ควบคุม,,
-Reset,รีเซ็ต,,
-Community Labs,ห้องทดลองชุมชน,,
+Reset,รีเซ็ต,,Common
+Community Labs,ห้องทดลองชุมชน,,VRChat Specific
 Locomotion,การเคลื่อนไหว,,
 Avatar Pedestals,,Pending vote,
 Constraint,คอนสเตรนต์,,Unity / 3D
@@ -153,7 +153,7 @@ PhysBone,ฟิสิกส์โบน,,Unity / 3D
 Mesh,เมช,,Unity / 3D
 Renderer,เรนเดอร์เรอร์,,Unity / 3D
 Deformed,ปรับรูป,,
-Performance,ประสิทธิภาพ,,
+Performance,ประสิทธิภาพ,,Common
 User,ผู้ใช้,,Common
 Texture,เท็กซ์เจอร์,,Unity / 3D
 Proximity,,Pending vote,
