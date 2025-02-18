@@ -144,7 +144,7 @@ Controller,อุปกรณ์ควบคุม,,
 Reset,รีเซ็ต,,Common
 Community Labs,ห้องทดลองชุมชน,,VRChat Specific
 Locomotion,การเคลื่อนไหว,,
-Avatar Pedestals,,Pending vote,
+Avatar Pedestals,แท่นอวาตาร์,Pending vote,
 Constraint,คอนสเตรนต์,,Unity / 3D
 Rigidbody,ริจิดบอดี้,,Unity / 3D
 Skinned Mesh,สกินด์เมช,,Unity / 3D
@@ -167,3 +167,4 @@ Vertices,เวอร์เท็กซ์,"Might open vote, Plural form of vert
 Trail,เทรล,,Unity / 3D
 Material,เมททีเรียล,,Unity / 3D
 Material Slots,ช่องเมททีเรียล,,Unity / 3D
+Something went wrong,เกิดข้อผิดพลาดบางประการ,When used without any explanation why the error happened,
