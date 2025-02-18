@@ -99,7 +99,7 @@ Rank,ยศ,ปรับเปลี่ยนตามบริบท,
 Remove,"ลบ, นำออก",ขึ้นอยู่กับบริบท,Common
 Rendering,การเรนเดอร์,,Unity / 3D
 Report, รายงาน,,
-Require,จำเป็น,ใช้ใน UI,
+Require,จำเป็น,ใช้ใน UI,UI
 Restart,รีสตาร์ท,,Common
 Send Boop,สะกิด,,
 Share,แชร์,,Common
@@ -148,7 +148,7 @@ Avatar Pedestals,,Pending vote,
 Constraint,คอนสเตรนต์,,Unity / 3D
 Rigidbody,ริจิดบอดี้,,Unity / 3D
 Skinned Mesh,สกินด์เมช,,Unity / 3D
-Cloth,ผ้า,"(Cloth components) Will open vote, this is debatable",Unity / 3D
+Cloth,ผ้า,"(Cloth components) Might open vote, this is debatable",Unity / 3D
 PhysBone,ฟิสิกส์โบน,,Unity / 3D
 Mesh,เมช,,Unity / 3D
 Renderer,เรนเดอร์เรอร์,,Unity / 3D
@@ -161,3 +161,7 @@ Collision,,Pending vote,
 Discrete,,Pending vote,Unity / 3D
 Component,คอมโพเนนต์,Pending vote,Unity / 3D
 Light,แสง,"When used with component, should be written as คอมโพเนนต์แสง",Unity / 3D
+Audio Source,ออดิโอซอร์ซ,,Unity / 3D
+Vertex,เวอร์เท็กซ์,,Unity / 3D
+Vertices,เวอร์เท็กซ์,"Might open vote, Plural form of vertex",Unity / 3D
+Trail,เทรล,,Unity / 3D
