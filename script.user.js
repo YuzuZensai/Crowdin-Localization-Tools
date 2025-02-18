@@ -1605,7 +1605,7 @@ function TranslatorTool() {
         .writeText(csvContent)
         .then(() => {
           const originalText = copyButton.textContent;
-          copyButton.textContent = "copied!";
+          copyButton.textContent = "Copied!";
           copyButton.style.color = "#4CAF50";
           setTimeout(() => {
             copyButton.textContent = originalText;
