@@ -173,9 +173,32 @@ Theme,ธีม,,
 Sticker,สติ๊กเกอร์,,
 This user,ผู้ใช้รายนี้,,
 Discrete,แยกจากกัน,,
-Fitted,,,
-In Out Bounce,,,
-Out Bounce,,,
-In Bounce,,,
-In Out Cric,,,
-Out Circ,,,
+Fitted,ฟิตเท็ด,,Dolly
+In Out Bounce,อินเอาต์เบานซ์,,Dolly
+Out Bounce,เอาต์เบานซ์,,Dolly
+In Bounce,อินเบานซ์,,Dolly
+In Out Cric,อินเอาต์เซอร์ก,,Dolly
+Out Circ,เอาต์เซอร์ก,,Dolly
+In Circ,อินเซอร์ก,,Dolly
+In Out Expo,อินเอาต์เอ็กซ์โป,,Dolly
+Out Expo,เอาต์เอ็กซ์โป,,Dolly
+In Expo,อินเอ็กซ์โป,,Dolly
+In Out Quint,อินเอาต์ควินท์,,Dolly
+Out Quint,เอาต์ควินท์,,Dolly
+In Quint,อินควินท์,,Dolly
+In Out Quart,อินเอาต์ควอร์ท,,Dolly
+Out Quart,เอาต์ควอร์ท,,Dolly
+In Quart,อินควอร์ท,,Dolly
+In Out Cubic,อินเอาต์คิวบิก,,Dolly
+Out Cubic,เอาต์คิวบิก,,Dolly
+In Cubic,อินคิวบิก,,Dolly
+In Out Quad,อินเอาต์ควอด,,Dolly
+Out Quad,เอาต์ควอด,,Dolly
+In Quad,อินควอด,,Dolly
+In Out Sine,อินเอาต์ไซน์,,Dolly
+Out Sine,เอาต์ไซน์,,Dolly
+In Sine,อินไซน์,,Dolly
+Reverse,รีเวิร์ส,,Dolly
+Repeat,รีพีท,,Dolly
+Linear,ลิเนียร์,,Dolly
+Loose,ลูส,,Dolly
