@@ -39,11 +39,11 @@ Failed,ล้มเหลว,,
 Fallback,ตัวสำรอง,,
 Favorite,ชื่นชอบ,,Common
 Favorites,รายการโปรด,,Common
-FBT,ฟูลบอดี้แทร็กกิ้ง,,
+FBT,ระบบติดตามร่างกาย,,
 Feature,ฟีเจอร์,,Common
 Friends,เพื่อน,,Instance Type
 Friends+,เพื่อน+,,Instance Type
-Full body Tracking,ฟูลบอดี้แทร็กกิ้ง,,
+Full body Tracking,ระบบติดตามร่างกาย,,
 Gallery,คลังรูปภาพ,,
 Gestures,ท่าทาง,,
 Good,ดี,,Avatar Performance Rank
@@ -138,13 +138,13 @@ Double Click,คลิกสองครั้ง,,UI
 Confetti,พลุกระดาษ,,
 VRChat+,VRC+,Pending confirmation from VRChat,VRChat Specific
 Selfie Expression,แสดงสีหน้าด้วยเซลฟี่,,
-Finger Tracking,,Pending vote,
-Face Tracking,,Pending vote,
+Finger Tracking,ระบบติดตามนิ้ว,,
+Face Tracking,ระบบติดตามใบหน้า,,
 Controller,อุปกรณ์ควบคุม,,
 Reset,รีเซ็ต,,Common
 Community Labs,ห้องทดลองชุมชน,,VRChat Specific
 Locomotion,การเคลื่อนไหว,,
-Avatar Pedestals,แท่นอวาตาร์,Pending vote,
+Avatar Pedestals,แท่นอวาตาร์,,
 Constraint,คอนสเตรนต์,,Unity / 3D
 Rigidbody,ริจิดบอดี้,,Unity / 3D
 Skinned Mesh,สกินด์เมช,,Unity / 3D
