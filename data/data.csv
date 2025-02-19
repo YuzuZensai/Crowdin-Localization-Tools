@@ -3,47 +3,47 @@ English,Thai,Note / Context (มีตรงไหนผิด/ไม่ Update 
 (x) are now enabled ,เปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
 (x) disabled,ปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
 (x) enabled,เปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
-Accessibility,การช่วยการเข้าถึง,,
-Action Menu,เมนูคำสั่ง,,
+Accessibility,การช่วยการเข้าถึง,,UI
+Action Menu,เมนูคำสั่ง,,UI
 AFK,AFK,,Common
 Ago,ที่แล้ว,"Relative time, ใช้บอกเวลาที่ผ่านไป เช่น 5 ชั่วโมงที่แล้ว",Common
 Animator,อนิเมเตอร์,,Unity / 3D
-Auto,อัตโนมัติ,Mostly on camera settings,
+Auto,อัตโนมัติ,Mostly on camera settings,Camera / Dolly
 Avatar,อวาตาร์,,VRChat Specific
 Avatar Culling,การซ่อนอวาตาร์,Culling เป็น ศัพท์ทางเทคนิค,
 Badge,เหรียญตรา,,VRChat Specific
 Binding,ตั้งค่าปุ่ม,,
 Block,บล็อก,Social feature,Common
 Border,ขอบ,,
-Browse,เรียกดู,,
+Browse,เรียกดู,,Common
 Calibrate,ตั้งศูนย์,,
 Captcha,แคปช่า,,Common
-Change,ปรับ,,
+Change,ปรับ,,Common
 Chat,แชท,,Common
 Chatbox,ช่องแชท, ,
-Click,คลิก,,
+Click,คลิก,,Common
 Colliders,คอลไลเดอร์,,Unity / 3D
-Debug,ดีบัก,ศัพท์ทางเทคนิค Dev,
-Decrease,ลด,,
+Debug,ดีบัก,ศัพท์ทางเทคนิค Dev,Common
+Decrease,ลด,,Common
 Default,ค่าเริ่มต้น,,Common
-Dismiss Notification,เพิกเฉยการแจ้งเตือน,,
+Dismiss Notification,เพิกเฉยการแจ้งเตือน,,UI
 Drift,ดริฟท์,,
 Dynamic,ไดนามิก,,
 Dynamic Bone,ไดนามิกโบน,,Unity / 3D
-Earmuffs,ปิดเสียงรอบข้าง,,
+Earmuffs,ปิดเสียงรอบข้าง,Earmuffs mode,VRChat Specific
 Email,อีเมล,,Common
 Emojis,อิโมจิ,"""อิโมจิ"" ref IOS",Common
-Error,เกิดข้อผิดพลาด,,
+Error,เกิดข้อผิดพลาด,,Common
 Excellent,ยอดเยี่ยม,,Avatar Performance Rank
-Failed,ล้มเหลว,,
-Fallback,ตัวสำรอง,,
+Failed,ล้มเหลว,,Common
+Fallback,ตัวสำรอง,Use with avatar,
 Favorite,ชื่นชอบ,,Common
 Favorites,รายการโปรด,,Common
-FBT,ระบบติดตามร่างกาย,,
+FBT,ระบบติดตามร่างกาย,Pending Vote,
 Feature,ฟีเจอร์,,Common
 Friends,เพื่อน,,Instance Type
 Friends+,เพื่อน+,,Instance Type
-Full body Tracking,ระบบติดตามร่างกาย,,
+Full body Tracking,ระบบติดตามร่างกาย,Pending Vote,
 Gallery,คลังรูปภาพ,,
 Gestures,ท่าทาง,,
 Good,ดี,,Avatar Performance Rank
@@ -61,7 +61,7 @@ Icon,ไอคอน,,
 ID,ไอดี,,
 Image,ภาพ,,Common
 Impostor,อิมพอสเตอร์,Avatar feature,VRChat Specific
-Increase,เพิ่ม,,
+Increase,เพิ่ม,,Common
 Instance,อินสแตนซ์,,VRChat Specific
 Interactions,การโต้ตอบ,,
 Invite,เชิญเท่านั้น,,Instance Type
@@ -82,7 +82,7 @@ Nuisance,ตัวป่วน,,Trust Rank
 Opacity,ความโปร่งแสง,,UI
 Override,ตั้งค่าทับซ้อน,,
 Particles,พาร์ทิเคิล,,Unity / 3D
-PC,พีซี,,
+PC,พีซี,,Common
 Permissions,สิทธิ์,,Common
 Persistence,ข้อมูลจัดเก็บ,,
 Photo,รูป,,Common
@@ -144,7 +144,7 @@ Controller,อุปกรณ์ควบคุม,,
 Reset,รีเซ็ต,,Common
 Community Labs,ห้องทดลองชุมชน,,VRChat Specific
 Locomotion,การเคลื่อนไหว,,
-Avatar Pedestals,แท่นอวาตาร์,,
+Avatar Pedestals,แท่นอวาตาร์,,VRChat Specific
 Constraint,คอนสเตรนต์,,Unity / 3D
 Rigidbody,ริจิดบอดี้,,Unity / 3D
 Skinned Mesh,สกินด์เมช,,Unity / 3D
@@ -167,18 +167,25 @@ Vertices,เวอร์เท็กซ์,"Might open vote, Plural form of vert
 Trail,เทรล,,Unity / 3D
 Material,เมททีเรียล,,Unity / 3D
 Material Slots,ช่องเมททีเรียล,,Unity / 3D
-Something went wrong,เกิดข้อผิดพลาดบางประการ,When used without any explanation why the error happened,VRChat Specific
-Print,พรินต์,,VRChat Specific
+Something went wrong,เกิดข้อผิดพลาดบางประการ,When used without any explanation why the error happened,Common
+Print,พรินต์,Pending vote,VRChat Specific
 Theme,ธีม,,
 Sticker,สติ๊กเกอร์,,
 This user,ผู้ใช้รายนี้,,
 Discrete,แยกจากกัน,,
-Fitted,ฟิตเท็ด,,Dolly
-Reverse,รีเวิร์ส,,Dolly
-Repeat,รีพีท,,Dolly
-Linear,ลิเนียร์,,Dolly
-Loose,ลูส,,Dolly
+Fitted,ฟิตเท็ด,,Camera / Dolly
+Reverse,รีเวิร์ส,,Camera / Dolly
+Repeat,รีพีท,,Camera / Dolly
+Linear,ลิเนียร์,,Camera / Dolly
+Loose,ลูส,,Camera / Dolly
 Invites,คำเชิญ,,UI
 Invite Requests,คำขอเชิญ,,UI
 Invite Request,ขอคำเชิญ,เมื่อขอให้คนที่ต้องการส่งคำเชิญมา,UI
 Wallet,กระเป๋าเงิน,,
+Token,โทเค็น,,
+Subscription,"การสมัครสมาชิก, สิทธิการเป็นสมาชิก",Depends on context,
+Represent Group,,Pending vote,
+Appear as,,"Pending vote, Use with trust rank",
+Layer,,Pending vote,
+Center Of The View,,"Pending vote, The Reticle Dot, for Desktop Client",
+Contrast,,Pending vote,
