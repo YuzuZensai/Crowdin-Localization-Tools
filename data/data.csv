@@ -168,7 +168,7 @@ Trail,เทรล,,Unity / 3D
 Material,เมททีเรียล,,Unity / 3D
 Material Slots,ช่องเมททีเรียล,,Unity / 3D
 Something went wrong,เกิดข้อผิดพลาดบางประการ,When used without any explanation why the error happened,VRChat Specific
-Print,พรินต์,,
+Print,พรินต์,,VRChat Specific
 Theme,ธีม,,
 Sticker,สติ๊กเกอร์,,
 This user,ผู้ใช้รายนี้,,
@@ -181,3 +181,4 @@ Loose,ลูส,,Dolly
 Invites,คำเชิญ,,UI
 Invite Requests,คำขอเชิญ,,UI
 Invite Request,ขอคำเชิญ,เมื่อขอให้คนที่ต้องการส่งคำเชิญมา,UI
+Wallet,กระเป๋าเงิน,,
