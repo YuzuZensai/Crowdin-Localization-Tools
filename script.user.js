@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Crowdin Localization Tools
 // @namespace    https://yuzu.kirameki.cafe/
-// @version      1.1.1
+// @version      1.1.2
 // @description  A tool for translating Crowdin projects using a CSV file
 // @author       Yuzu (YuzuZensai)
 // @match        https://crowdin.com/editor/*
@@ -45,7 +45,7 @@ const CONFIG = {
   fuzzyThreshold: 0.7,
 
   metadata: {
-    version: "1.1.1",
+    version: "1.1.2",
     repository: "https://github.com/YuzuZensai/Crowdin-Localization-Tools",
     authorGithub: "https://github.com/YuzuZensai",
   },
@@ -1406,6 +1406,7 @@ function TranslatorTool() {
     table.style.width = "100%";
     table.style.borderCollapse = "collapse";
     table.style.tableLayout = "fixed";
+    table.style.color = "#000";
 
     // Header
     var thead = document.createElement("thead");
@@ -1465,6 +1466,7 @@ function TranslatorTool() {
         container.style.display = "flex";
         container.style.flexDirection = "column";
         container.style.gap = "4px";
+        container.style.color = "#000";
 
         // Add category chip first if in note column
         if (!isSource && !isTarget && category) {
