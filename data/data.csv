@@ -158,7 +158,7 @@ User,ผู้ใช้,,Common
 Texture,เท็กซ์เจอร์,,Unity / 3D
 Proximity,ความใกล้เคียง,,
 Collision,,Pending vote,
-Discrete,ไม่ต่อเนื่อง,,Unity / 3D
+Discrete,ไม่ต่อเนื่อง,Collision detection mode,Unity / 3D
 Component,คอมโพเนนต์,,Unity / 3D
 Light,แสง,"When used with component, should be written as คอมโพเนนต์แสง",Unity / 3D
 Audio Source,ออดิโอซอร์ซ,,Unity / 3D
@@ -172,3 +172,10 @@ Print,พรินต์,,
 Theme,ธีม,,
 Sticker,สติ๊กเกอร์,,
 This user,ผู้ใช้รายนี้,,
+Discrete,แยกจากกัน,,
+Fitted,,,
+In Out Bounce,,,
+Out Bounce,,,
+In Bounce,,,
+In Out Cric,,,
+Out Circ,,,
