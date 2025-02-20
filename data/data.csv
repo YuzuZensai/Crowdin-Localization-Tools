@@ -168,7 +168,7 @@ Trail,เทรล,,Unity / 3D
 Material,เมททีเรียล,,Unity / 3D
 Material Slots,ช่องเมททีเรียล,,Unity / 3D
 Something went wrong,เกิดข้อผิดพลาดบางประการ,When used without any explanation why the error happened,Common
-Print,พรินต์,Pending vote,VRChat Specific
+Print,พรินต์,,VRChat Specific
 Theme,ธีม,,
 Sticker,สติ๊กเกอร์,,
 This user,ผู้ใช้รายนี้,,
@@ -185,7 +185,7 @@ Wallet,กระเป๋าเงิน,,
 Token,โทเค็น,,
 Subscription,"การสมัครสมาชิก, สิทธิการเป็นสมาชิก",Depends on context,
 Represent Group,,Pending vote,
-Appear as,,"Pending vote, Use with trust rank",
+Appear as,แสดงตัวเป็น,Use with trust rank,
 Layer,,Pending vote,
-Center Of The View,,"Pending vote, The Reticle Dot, for Desktop Client",
-Contrast,,Pending vote,
+Center Of The View,ตรงกลางของมุมมอง,"The Reticle Dot, for Desktop Client",
+Contrast,ค่าความต่างแสง,,
