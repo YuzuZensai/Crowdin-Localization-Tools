@@ -157,7 +157,7 @@ Performance,ประสิทธิภาพ,,Common
 User,ผู้ใช้,,Common
 Texture,เท็กซ์เจอร์,,Unity / 3D
 Proximity,ความใกล้เคียง,,
-Collision,,Pending vote,
+Collision,คอลลิชัน,,
 Discrete,ไม่ต่อเนื่อง,Collision detection mode,Unity / 3D
 Component,คอมโพเนนต์,,Unity / 3D
 Light,แสง,"When used with component, should be written as คอมโพเนนต์แสง",Unity / 3D
