@@ -186,6 +186,10 @@ Token,โทเค็น,,
 Subscription,"การสมัครสมาชิก, สิทธิการเป็นสมาชิก",Depends on context,
 Represent Group,,Pending vote,
 Appear as,แสดงตัวเป็น,Use with trust rank,
-Layer,,Pending vote,
+Layer,เลเยอร์,,Camera / Dolly
 Center Of The View,ตรงกลางของมุมมอง,"The Reticle Dot, for Desktop Client",
 Contrast,ค่าความต่างแสง,,
+Announcement,ประชาสัมพันธ์,Pending vote,Common
+Multi Layer,หลายเลเยอร์,,Camera / Dolly
+Abusive,,Pending vote,
+Join,เข้าร่วม,,
