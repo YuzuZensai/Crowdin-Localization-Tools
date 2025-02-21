@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Crowdin Localization Tools
 // @namespace    https://yuzu.kirameki.cafe/
-// @version      1.1.2
+// @version      1.1.3
 // @description  A tool for translating Crowdin projects using a CSV file
 // @author       Yuzu (YuzuZensai)
 // @match        https://crowdin.com/editor/*
@@ -45,7 +45,7 @@ const CONFIG = {
   fuzzyThreshold: 0.7,
 
   metadata: {
-    version: "1.1.2",
+    version: "1.1.3",
     repository: "https://github.com/YuzuZensai/Crowdin-Localization-Tools",
     authorGithub: "https://github.com/YuzuZensai",
   },
@@ -167,6 +167,62 @@ function TranslatorTool() {
   var updateLink;
   var currentCSVSource = null;
   var categoryColors = new Map();
+
+  // Common words that shouldn't be matched individually or in pairs
+  const COMMON_WORDS = new Set([
+    "the",
+    "a",
+    "an",
+    "and",
+    "or",
+    "but",
+    "in",
+    "on",
+    "at",
+    "to",
+    "for",
+    "of",
+    "with",
+    "by",
+    "from",
+    "up",
+    "about",
+    "into",
+    "over",
+    "after",
+    "is",
+    "are",
+    "was",
+    "were",
+    "be",
+    "have",
+    "has",
+    "had",
+    "do",
+    "does",
+    "did",
+    "will",
+    "would",
+    "should",
+    "could",
+    "this",
+    "that",
+    "these",
+    "those",
+    "it",
+    "its",
+    "as",
+  ]);
+
+  function isSignificantPhrase(phrase) {
+    const words = phrase.toLowerCase().split(/\s+/);
+    // If it's a single word, it should be longer than 3 chars and not common
+    if (words.length === 1) {
+      return words[0].length > 3 && !COMMON_WORDS.has(words[0]);
+    }
+    // For multi-word phrases, at least one word should be significant
+    return words.some((word) => word.length > 3 && !COMMON_WORDS.has(word));
+  }
 
   function generateColorForCategory(category) {
     if (!category) return null;
@@ -1227,79 +1283,195 @@ function TranslatorTool() {
   function findMatches(text) {
     if (!text || !translationData.length) return;
 
-    log("debug", "Finding matches", {
-      text: text.substring(0, 50) + (text.length > 50 ? "..." : ""),
-      length: text.length,
+    log("debug", "Finding matches for text:", {
+      text: text,
+      wordCount: text.split(/\s+/).filter((w) => w.length > 0).length,
     });
 
-    var words = text.split(/\s+/);
+    var words = text.split(/\s+/).filter((word) => word.length > 0);
     var matches = [];
     var seenCombinations = new Set();
 
-    words.forEach(function (word) {
-      if (!word) return;
+    // Generate word combinations (phrases of decreasing length)
+    var combinations = [];
 
-      // First try exact match with punctuation
+    // Add full phrase first
+    const fullPhrase = words.join(" ");
+    if (isSignificantPhrase(fullPhrase)) {
+      combinations.push(fullPhrase);
+    }
+
+    // Add all possible 3-word combinations
+    for (let i = 0; i < words.length - 2; i++) {
+      const threeWordPhrase = words.slice(i, i + 3).join(" ");
+      if (isSignificantPhrase(threeWordPhrase)) {
+        combinations.push(threeWordPhrase);
+      }
+    }
+
+    // Add word pairs
+    for (let i = 0; i < words.length - 1; i++) {
+      const twoWordPhrase = words.slice(i, i + 2).join(" ");
+      if (isSignificantPhrase(twoWordPhrase)) {
+        combinations.push(twoWordPhrase);
+      }
+    }
+
+    // Add individual significant words
+    words.forEach((word) => {
+      if (isSignificantPhrase(word)) {
+        combinations.push(word);
+      }
+    });
+
+    log("debug", "Generated combinations:", combinations);
+
+    combinations.forEach(function (combination) {
+      if (!combination) return;
+
       translationData.forEach(function (entry) {
         const uniqueKey = `${entry.source.toLowerCase()}_${
           entry.category || "default"
         }`;
+        if (seenCombinations.has(uniqueKey)) return;
 
-        // Exact match (case-insensitive)
-        if (
-          entry.source.toLowerCase() === word.toLowerCase() &&
-          !seenCombinations.has(uniqueKey)
-        ) {
+        const entryLower = entry.source.toLowerCase();
+        const combinationLower = combination.toLowerCase();
+
+        // For exact matches (case-insensitive)
+        if (entryLower === combinationLower) {
           seenCombinations.add(uniqueKey);
+          log("debug", "Exact match found:", {
+            source: entry.source,
+            combination: combination,
+            score: 1,
+          });
           matches.push({
             entry: entry,
             score: 1,
-            matchedWord: word,
+            matchedWord: combination,
           });
           return;
         }
 
-        // Clean the word from punctuation for fuzzy matching
-        var cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
-        if (!cleanWord || cleanWord.length <= 1) return; // Skip if cleaned word is too short
+        // Split source into words and combinations
+        const sourceWords = entry.source
+          .split(/\s+/)
+          .filter((word) => word.length > 0);
 
-        // For short words (2-3 chars), use stricter matching
-        if (cleanWord.length <= 3) {
-          // Only match if it's a complete word match or surrounded by word boundaries
-          const regex = new RegExp(`\\b${cleanWord}\\b`, "i");
-          if (regex.test(entry.source) && !seenCombinations.has(uniqueKey)) {
-            seenCombinations.add(uniqueKey);
-            matches.push({
-              entry: entry,
-              score: 1,
-              matchedWord: cleanWord,
-            });
+        // Only proceed if the source is significant
+        if (!isSignificantPhrase(entry.source)) {
+          return;
+        }
+
+        // Generate source combinations similar to input combinations
+        const sourceCombinations = [];
+        sourceCombinations.push(sourceWords.join(" ")); // Full phrase
+
+        // 3-word combinations from source
+        for (let i = 0; i < sourceWords.length - 2; i++) {
+          const threeWordPhrase = sourceWords.slice(i, i + 3).join(" ");
+          if (isSignificantPhrase(threeWordPhrase)) {
+            sourceCombinations.push(threeWordPhrase);
           }
-        } else {
-          // For longer words, use fuzzy match with higher threshold
-          const score = similarity(
-            entry.source.toLowerCase(),
-            cleanWord.toLowerCase()
+        }
+
+        // 2-word combinations from source
+        for (let i = 0; i < sourceWords.length - 1; i++) {
+          const twoWordPhrase = sourceWords.slice(i, i + 2).join(" ");
+          if (isSignificantPhrase(twoWordPhrase)) {
+            sourceCombinations.push(twoWordPhrase);
+          }
+        }
+
+        // Individual significant words from source
+        sourceWords.forEach((word) => {
+          if (isSignificantPhrase(word)) {
+            sourceCombinations.push(word);
+          }
+        });
+
+        // Find best matching combination
+        let bestScore = 0;
+        let bestMatch = "";
+        let bestSourceCombo = "";
+
+        sourceCombinations.forEach((sourceCombo) => {
+          const score = similarity(sourceCombo.toLowerCase(), combinationLower);
+
+          // Only consider high-quality matches
+          if (score < 0.8) return;
+
+          const sourceWordCount = sourceCombo.split(/\s+/).length;
+          const combinationWordCount = combination.split(/\s+/).length;
+
+          let adjustedScore = score;
+
+          // Heavy penalties for mismatches
+          if (Math.abs(sourceWordCount - combinationWordCount) > 0) {
+            adjustedScore *= 0.4; // 60% penalty for word count mismatch
+          }
+
+          if (combinationWordCount === 1 && sourceWords.length > 1) {
+            adjustedScore *= 0.3; // 70% penalty for single word matches
+          }
+
+          // Exact word boundary match bonus
+          const isExactMatch = new RegExp(`\\b${combinationLower}\\b`).test(
+            sourceCombo.toLowerCase()
           );
-          if (
-            score >= CONFIG.fuzzyThreshold &&
-            !seenCombinations.has(uniqueKey)
-          ) {
-            seenCombinations.add(uniqueKey);
-            matches.push({
-              entry: entry,
-              score: score,
-              matchedWord: cleanWord,
-            });
+          if (isExactMatch) {
+            adjustedScore *= 1.3; // 30% bonus for exact word boundary matches
           }
+
+          if (adjustedScore > bestScore) {
+            bestScore = adjustedScore;
+            bestMatch = combination;
+            bestSourceCombo = sourceCombo;
+          }
+        });
+
+        // Stricter thresholds
+        let threshold = CONFIG.fuzzyThreshold * 1.2; // Base threshold increased by 20%
+
+        if (combination.split(/\s+/).length === 1) {
+          threshold *= 1.4; // Even higher threshold for single words
+        }
+
+        if (bestScore >= threshold && !seenCombinations.has(uniqueKey)) {
+          seenCombinations.add(uniqueKey);
+          log("debug", "Fuzzy match found:", {
+            source: entry.source,
+            combination: combination,
+            matchedPart: bestSourceCombo,
+            originalScore: similarity(
+              bestSourceCombo.toLowerCase(),
+              combinationLower
+            ),
+            adjustedScore: bestScore,
+            threshold: threshold,
+          });
+          matches.push({
+            entry: entry,
+            score: bestScore,
+            matchedWord: bestMatch,
+          });
         }
       });
     });
 
     // Sort matches by score first, then by category
     matches.sort(function (a, b) {
-      if (b.score === a.score) {
-        // If scores are equal, sort by category presence (entries with category come first)
+      const aWordCount = a.matchedWord.split(/\s+/).length;
+      const bWordCount = b.matchedWord.split(/\s+/).length;
+
+      if (Math.abs(b.score - a.score) < 0.05) {
+        // Reduced tolerance for "close" scores
+        // Prioritize multi-word matches
+        if (aWordCount !== bWordCount) {
+          return bWordCount - aWordCount;
+        }
+        // If word counts are equal, sort by category presence
         if (!!a.entry.category !== !!b.entry.category) {
           return a.entry.category ? -1 : 1;
         }
@@ -1309,7 +1481,18 @@ function TranslatorTool() {
       return b.score - a.score;
     });
 
-    log("success", "Found matches", { count: matches.length });
+    // Log final sorted matches
+    log(
+      "info",
+      "Final matches:",
+      matches.map((match) => ({
+        source: match.entry.source,
+        matchedWord: match.matchedWord,
+        score: Math.round(match.score * 100) + "%",
+        category: match.entry.category || "none",
+      }))
+    );
+
     displayFuzzyMatches(matches);
   }
 
@@ -1408,7 +1591,6 @@ function TranslatorTool() {
     table.style.tableLayout = "fixed";
     table.style.color = "#000";
 
-    // Header
     var thead = document.createElement("thead");
     thead.style.position = "sticky";
     thead.style.top = "0";
@@ -1417,19 +1599,11 @@ function TranslatorTool() {
 
     var headerRow = document.createElement("tr");
     var columns = [
-      { name: "Source", width: "35%" },
-      { name: "Target", width: "35%" },
+      { name: "Source", width: "30%" },
+      { name: "Target", width: "30%" },
       { name: "Note", width: "30%" },
+      { name: "Score", width: "10%" },
     ];
-
-    if (matches[0].matchedWord) {
-      columns = [
-        { name: "Source", width: "30%" },
-        { name: "Target", width: "30%" },
-        { name: "Note", width: "25%" },
-        { name: "Match", width: "15%" },
-      ];
-    }
 
     columns.forEach((col) => {
       var th = document.createElement("th");
@@ -1447,88 +1621,15 @@ function TranslatorTool() {
 
     // Create table body
     var tbody = document.createElement("tbody");
+
+    // Sort matches by score (highest to lowest)
+    matches.sort((a, b) => b.score - a.score);
+
     matches.forEach(function (match) {
       var row = document.createElement("tr");
       const scorePercentage = Math.round(match.score * 100);
       const bgColor = `rgba(26, 115, 232, ${match.score * 0.1})`;
       row.style.backgroundColor = bgColor;
-
-      function createCopyableCell(
-        text,
-        isSource = false,
-        isTarget = false,
-        category = ""
-      ) {
-        var cell = document.createElement("td");
-
-        // Create container for content
-        var container = document.createElement("div");
-        container.style.display = "flex";
-        container.style.flexDirection = "column";
-        container.style.gap = "4px";
-        container.style.color = "#000";
-
-        // Add category chip first if in note column
-        if (!isSource && !isTarget && category) {
-          container.innerHTML += createCategoryChip(category);
-        }
-
-        // Add main text
-        var mainText = document.createElement("div");
-        mainText.textContent = text || "";
-        mainText.style.flex = "1";
-        container.appendChild(mainText);
-
-        cell.appendChild(container);
-        cell.style.padding = "8px";
-        cell.style.border = "1px solid #e0e0e0";
-        cell.style.wordBreak = "break-word";
-        cell.style.whiteSpace = "normal";
-        cell.style.verticalAlign = "top";
-        cell.style.cursor = "pointer";
-        cell.style.userSelect = "text";
-        cell.style.position = "relative";
-
-        cell.title = "Click to copy";
-
-        // Hover effect
-        cell.addEventListener("mouseover", function () {
-          this.style.backgroundColor = "rgba(26, 115, 232, 0.1)";
-        });
-
-        cell.addEventListener("mouseout", function () {
-          this.style.backgroundColor = "transparent";
-        });
-
-        cell.addEventListener("click", function (e) {
-          if (window.getSelection().toString()) {
-            return;
-          }
-
-          navigator.clipboard.writeText(text).then(() => {
-            var tooltip = document.createElement("div");
-            tooltip.textContent = "Copied!";
-            tooltip.style.position = "absolute";
-            tooltip.style.backgroundColor = "#333";
-            tooltip.style.color = "white";
-            tooltip.style.padding = "4px 8px";
-            tooltip.style.borderRadius = "4px";
-            tooltip.style.fontSize = "12px";
-            tooltip.style.zIndex = "1000";
-            tooltip.style.top = "0";
-            tooltip.style.left = "50%";
-            tooltip.style.transform = "translate(-50%, -100%)";
-
-            cell.appendChild(tooltip);
-
-            setTimeout(() => {
-              tooltip.remove();
-            }, 1000);
-          });
-        });
-
-        return cell;
-      }
 
       row.appendChild(createCopyableCell(match.entry.source, true, false));
       row.appendChild(createCopyableCell(match.entry.target, false, true));
@@ -1536,11 +1637,20 @@ function TranslatorTool() {
         createCopyableCell(match.entry.note, false, false, match.entry.category)
       );
 
-      if (match.matchedWord) {
-        row.appendChild(
-          createCopyableCell(`${match.matchedWord} (${scorePercentage}%)`)
-        );
+      // Score cell
+      var scoreCell = document.createElement("td");
+      scoreCell.textContent = scorePercentage + "%";
+      scoreCell.style.padding = "8px";
+      scoreCell.style.border = "1px solid #e0e0e0";
+      scoreCell.style.fontWeight = "bold";
+      if (scorePercentage === 100) {
+        scoreCell.style.color = "#4CAF50"; // Green for perfect matches
+      } else if (scorePercentage >= 80) {
+        scoreCell.style.color = "#1a73e8"; // Blue for high matches
+      } else {
+        scoreCell.style.color = "#666"; // Gray for lower matches
       }
+      row.appendChild(scoreCell);
 
       tbody.appendChild(row);
     });
@@ -1586,7 +1696,7 @@ function TranslatorTool() {
     });
 
     copyButton.addEventListener("click", function () {
-      let csvContent = "Source,Target,Note,Category\n";
+      let csvContent = "Score,Source,Target,Note,Category\n";
       matches.forEach(function (match) {
         const escapeField = (field) => {
           if (!field) return "";
@@ -1596,6 +1706,7 @@ function TranslatorTool() {
 
         csvContent +=
           [
+            Math.round(match.score * 100) + "%",
             escapeField(match.entry.source),
             escapeField(match.entry.target),
             escapeField(match.entry.note),
@@ -1616,10 +1727,10 @@ function TranslatorTool() {
         })
         .catch((err) => {
           log("error", "Failed to copy CSV", err);
-          copyButton.textContent = "failed to copy";
+          copyButton.textContent = "Failed to copy";
           copyButton.style.color = "#F44336";
           setTimeout(() => {
-            copyButton.textContent = "copy as CSV";
+            copyButton.textContent = "Copy as CSV";
             copyButton.style.color = "#1a73e8";
           }, 2000);
         });
@@ -1915,6 +2026,83 @@ function TranslatorTool() {
         document.body.removeChild(notification);
       }
     }, 10000);
+  }
+
+  function createCopyableCell(
+    text,
+    isSource = false,
+    isTarget = false,
+    category = ""
+  ) {
+    var cell = document.createElement("td");
+
+    // Create container for content
+    var container = document.createElement("div");
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    container.style.gap = "4px";
+    container.style.color = "#000";
+
+    // Add category chip first if in note column
+    if (!isSource && !isTarget && category) {
+      container.innerHTML += createCategoryChip(category);
+    }
+
+    // Add main text
+    var mainText = document.createElement("div");
+    mainText.textContent = text || "";
+    mainText.style.flex = "1";
+    container.appendChild(mainText);
+
+    cell.appendChild(container);
+    cell.style.padding = "8px";
+    cell.style.border = "1px solid #e0e0e0";
+    cell.style.wordBreak = "break-word";
+    cell.style.whiteSpace = "normal";
+    cell.style.verticalAlign = "top";
+    cell.style.cursor = "pointer";
+    cell.style.userSelect = "text";
+    cell.style.position = "relative";
+
+    cell.title = "Click to copy";
+
+    // Hover effect
+    cell.addEventListener("mouseover", function () {
+      this.style.backgroundColor = "rgba(26, 115, 232, 0.1)";
+    });
+
+    cell.addEventListener("mouseout", function () {
+      this.style.backgroundColor = "transparent";
+    });
+
+    cell.addEventListener("click", function (e) {
+      if (window.getSelection().toString()) {
+        return;
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        var tooltip = document.createElement("div");
+        tooltip.textContent = "Copied!";
+        tooltip.style.position = "absolute";
+        tooltip.style.backgroundColor = "#333";
+        tooltip.style.color = "white";
+        tooltip.style.padding = "4px 8px";
+        tooltip.style.borderRadius = "4px";
+        tooltip.style.fontSize = "12px";
+        tooltip.style.zIndex = "1000";
+        tooltip.style.top = "0";
+        tooltip.style.left = "50%";
+        tooltip.style.transform = "translate(-50%, -100%)";
+
+        cell.appendChild(tooltip);
+
+        setTimeout(() => {
+          tooltip.remove();
+        }, 1000);
+      });
+    });
+
+    return cell;
   }
 
   init();
