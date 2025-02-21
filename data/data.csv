@@ -189,7 +189,13 @@ Appear as,แสดงตัวเป็น,Use with trust rank,
 Layer,เลเยอร์,,Camera / Dolly
 Center Of The View,ตรงกลางของมุมมอง,"The Reticle Dot, for Desktop Client",
 Contrast,ค่าความต่างแสง,,
-Announcement,ประชาสัมพันธ์,Pending vote,Common
+Announcement,ประกาศ,,Common
 Multi Layer,หลายเลเยอร์,,Camera / Dolly
-Abusive,,Pending vote,
+Abusive,ล่วงละเมิด,,
 Join,เข้าร่วม,,
+Clear,ล้าง,,
+In Out Sine,อินเอาต์ไซน์,,Camera / Dolly
+Out Sine,เอาต์ไซน์,,Camera / Dolly
+In Sine,อินไซน์,,Camera / Dolly
+(x) are disabled,(x)ปิดใช้งานอยู่,,UI
+(x) are enabled,(x)เปิดใช้งานอยู่,,UI
