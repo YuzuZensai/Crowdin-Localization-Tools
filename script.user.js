@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Crowdin Localization Tools
 // @namespace    https://yuzu.kirameki.cafe/
-// @version      1.1.3
+// @version      1.1.4
 // @description  A tool for translating Crowdin projects using a CSV file
 // @author       Yuzu (YuzuZensai)
 // @match        https://crowdin.com/editor/*
@@ -45,7 +45,7 @@ const CONFIG = {
   fuzzyThreshold: 0.7,
 
   metadata: {
-    version: "1.1.3",
+    version: "1.1.4",
     repository: "https://github.com/YuzuZensai/Crowdin-Localization-Tools",
     authorGithub: "https://github.com/YuzuZensai",
   },
@@ -863,9 +863,14 @@ function TranslatorTool() {
 
   function setupEventListeners() {
     log("info", "Setting up event listeners");
-    searchInput.addEventListener("input", function () {
-      log("info", "Search input detected");
+    // Debounce the search with 300ms delay
+    const debouncedSearch = debounce(() => {
       searchTranslations();
+    }, 300);
+
+    searchInput.addEventListener("input", function () {
+      log("info", "Search input detected - debounced");
+      debouncedSearch();
     });
   }
 
@@ -1280,20 +1285,30 @@ function TranslatorTool() {
     }
   }
 
-  function findMatches(text) {
-    if (!text || !translationData.length) return;
+  // Debounce function
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
 
-    log("debug", "Finding matches for text:", {
-      text: text,
-      wordCount: text.split(/\s+/).filter((w) => w.length > 0).length,
-    });
+  // Cache for word combinations
+  const combinationsCache = new Map();
+  const similarityCache = new Map();
 
-    var words = text.split(/\s+/).filter((word) => word.length > 0);
-    var matches = [];
-    var seenCombinations = new Set();
+  function getCachedCombinations(text) {
+    if (combinationsCache.has(text)) {
+      return combinationsCache.get(text);
+    }
 
-    // Generate word combinations (phrases of decreasing length)
-    var combinations = [];
+    const words = text.split(/\s+/).filter((word) => word.length > 0);
+    const combinations = [];
 
     // Add full phrase first
     const fullPhrase = words.join(" ");
@@ -1324,10 +1339,49 @@ function TranslatorTool() {
       }
     });
 
+    combinationsCache.set(text, combinations);
+    return combinations;
+  }
+
+  function getCachedSimilarity(str1, str2) {
+    const key = `${str1}|${str2}`;
+    if (similarityCache.has(key)) {
+      return similarityCache.get(key);
+    }
+    const score = similarity(str1, str2);
+    similarityCache.set(key, score);
+    return score;
+  }
+
+  function findMatches(text) {
+    if (!text || !translationData.length) return;
+
+    log("debug", "Finding matches for text:", {
+      text: text,
+      wordCount: text.split(/\s+/).filter((w) => w.length > 0).length,
+    });
+
+    const matches = [];
+    const seenCombinations = new Set();
+    const combinations = getCachedCombinations(text);
+
     log("debug", "Generated combinations:", combinations);
+
+    // Pre-calculate source combinations for each entry
+    const entryCombinations = new Map();
+    translationData.forEach((entry) => {
+      entryCombinations.set(entry, getCachedCombinations(entry.source));
+    });
 
     combinations.forEach(function (combination) {
       if (!combination) return;
+
+      const combinationLower = combination.toLowerCase();
+
+      // Early exit if we already have enough high-quality matches
+      if (matches.length > 20 && matches[19].score > 0.9) {
+        return;
+      }
 
       translationData.forEach(function (entry) {
         const uniqueKey = `${entry.source.toLowerCase()}_${
@@ -1336,16 +1390,10 @@ function TranslatorTool() {
         if (seenCombinations.has(uniqueKey)) return;
 
         const entryLower = entry.source.toLowerCase();
-        const combinationLower = combination.toLowerCase();
 
         // For exact matches (case-insensitive)
         if (entryLower === combinationLower) {
           seenCombinations.add(uniqueKey);
-          log("debug", "Exact match found:", {
-            source: entry.source,
-            combination: combination,
-            score: 1,
-          });
           matches.push({
             entry: entry,
             score: 1,
@@ -1354,53 +1402,27 @@ function TranslatorTool() {
           return;
         }
 
-        // Split source into words and combinations
-        const sourceWords = entry.source
-          .split(/\s+/)
-          .filter((word) => word.length > 0);
-
         // Only proceed if the source is significant
         if (!isSignificantPhrase(entry.source)) {
           return;
         }
 
-        // Generate source combinations similar to input combinations
-        const sourceCombinations = [];
-        sourceCombinations.push(sourceWords.join(" ")); // Full phrase
-
-        // 3-word combinations from source
-        for (let i = 0; i < sourceWords.length - 2; i++) {
-          const threeWordPhrase = sourceWords.slice(i, i + 3).join(" ");
-          if (isSignificantPhrase(threeWordPhrase)) {
-            sourceCombinations.push(threeWordPhrase);
-          }
-        }
-
-        // 2-word combinations from source
-        for (let i = 0; i < sourceWords.length - 1; i++) {
-          const twoWordPhrase = sourceWords.slice(i, i + 2).join(" ");
-          if (isSignificantPhrase(twoWordPhrase)) {
-            sourceCombinations.push(twoWordPhrase);
-          }
-        }
-
-        // Individual significant words from source
-        sourceWords.forEach((word) => {
-          if (isSignificantPhrase(word)) {
-            sourceCombinations.push(word);
-          }
-        });
+        // Get cached source combinations
+        const sourceCombinations = entryCombinations.get(entry);
 
         // Find best matching combination
         let bestScore = 0;
         let bestMatch = "";
         let bestSourceCombo = "";
 
-        sourceCombinations.forEach((sourceCombo) => {
-          const score = similarity(sourceCombo.toLowerCase(), combinationLower);
+        for (const sourceCombo of sourceCombinations) {
+          const score = getCachedSimilarity(
+            sourceCombo.toLowerCase(),
+            combinationLower
+          );
 
-          // Only consider high-quality matches
-          if (score < 0.8) return;
+          // Early exit if score is too low
+          if (score < 0.8) continue;
 
           const sourceWordCount = sourceCombo.split(/\s+/).length;
           const combinationWordCount = combination.split(/\s+/).length;
@@ -1409,11 +1431,11 @@ function TranslatorTool() {
 
           // Heavy penalties for mismatches
           if (Math.abs(sourceWordCount - combinationWordCount) > 0) {
-            adjustedScore *= 0.4; // 60% penalty for word count mismatch
+            adjustedScore *= 0.4;
           }
 
-          if (combinationWordCount === 1 && sourceWords.length > 1) {
-            adjustedScore *= 0.3; // 70% penalty for single word matches
+          if (combinationWordCount === 1 && sourceWordCount > 1) {
+            adjustedScore *= 0.3;
           }
 
           // Exact word boundary match bonus
@@ -1421,7 +1443,7 @@ function TranslatorTool() {
             sourceCombo.toLowerCase()
           );
           if (isExactMatch) {
-            adjustedScore *= 1.3; // 30% bonus for exact word boundary matches
+            adjustedScore *= 1.3;
           }
 
           if (adjustedScore > bestScore) {
@@ -1429,28 +1451,17 @@ function TranslatorTool() {
             bestMatch = combination;
             bestSourceCombo = sourceCombo;
           }
-        });
+        }
 
         // Stricter thresholds
-        let threshold = CONFIG.fuzzyThreshold * 1.2; // Base threshold increased by 20%
+        let threshold = CONFIG.fuzzyThreshold * 1.2;
 
         if (combination.split(/\s+/).length === 1) {
-          threshold *= 1.4; // Even higher threshold for single words
+          threshold *= 1.4;
         }
 
         if (bestScore >= threshold && !seenCombinations.has(uniqueKey)) {
           seenCombinations.add(uniqueKey);
-          log("debug", "Fuzzy match found:", {
-            source: entry.source,
-            combination: combination,
-            matchedPart: bestSourceCombo,
-            originalScore: similarity(
-              bestSourceCombo.toLowerCase(),
-              combinationLower
-            ),
-            adjustedScore: bestScore,
-            threshold: threshold,
-          });
           matches.push({
             entry: entry,
             score: bestScore,
@@ -1460,28 +1471,31 @@ function TranslatorTool() {
       });
     });
 
+    // Clear caches if they get too large
+    if (similarityCache.size > 10000) {
+      similarityCache.clear();
+    }
+    if (combinationsCache.size > 1000) {
+      combinationsCache.clear();
+    }
+
     // Sort matches by score first, then by category
     matches.sort(function (a, b) {
       const aWordCount = a.matchedWord.split(/\s+/).length;
       const bWordCount = b.matchedWord.split(/\s+/).length;
 
       if (Math.abs(b.score - a.score) < 0.05) {
-        // Reduced tolerance for "close" scores
-        // Prioritize multi-word matches
         if (aWordCount !== bWordCount) {
           return bWordCount - aWordCount;
         }
-        // If word counts are equal, sort by category presence
         if (!!a.entry.category !== !!b.entry.category) {
           return a.entry.category ? -1 : 1;
         }
-        // If both have or don't have categories, sort by matched word length
         return b.matchedWord.length - a.matchedWord.length;
       }
       return b.score - a.score;
     });
 
-    // Log final sorted matches
     log(
       "info",
       "Final matches:",
