@@ -93,7 +93,7 @@ Poor,แย่,,Avatar Performance Rank
 Portal,ประตูมิติ,,VRChat Specific
 Profile,โปรไฟล์,,
 Public,สาธารณะ,,Instance Type
-Push To Talk,กดเพื่อคุย,,
+Push To Talk,กดเพื่อพูด,,
 Quest,Quest,,
 Rank,ยศ,ปรับเปลี่ยนตามบริบท,
 Remove,"ลบ, นำออก",ขึ้นอยู่กับบริบท,Common
@@ -204,3 +204,24 @@ Upgrade,อัพเกรด,Pending vote,
 Bloom,บลูม,Pending vote,
 Legacy,,Pending vote,
 Horizon Adjust,การปรับแนวระนาบ,,
+In Out Bounce,อินเอาต์เบานซ์,,Camera / Dolly
+Out Bounce,เอาต์เบานซ์,,Camera / Dolly
+In Bounce,อินเบานซ์,,Camera / Dolly
+In Out Cric,อินเอาต์เซอร์ก,,Camera / Dolly
+Out Circ,เอาต์เซอร์ก,,Camera / Dolly
+In Circ,อินเซอร์ก,,Camera / Dolly
+In Out Expo,อินเอาต์เอ็กซ์โป,,Camera / Dolly
+Out Expo,เอาต์เอ็กซ์โป,,Camera / Dolly
+In Expo,อินเอ็กซ์โป,,Camera / Dolly
+In Out Quint,อินเอาต์ควินท์,,Camera / Dolly
+Out Quint,เอาต์ควินท์,,Camera / Dolly
+In Quint,อินควินท์,,Camera / Dolly
+In Out Quart,อินเอาต์ควอร์ท,,Camera / Dolly
+Out Quart,เอาต์ควอร์ท,,Camera / Dolly
+In Quart,อินควอร์ท,,Camera / Dolly
+In Out Cubic,อินเอาต์คิวบิก,,Camera / Dolly
+Out Cubic,เอาต์คิวบิก,,Camera / Dolly
+In Cubic,อินคิวบิก,,Camera / Dolly
+In Out Quad,อินเอาต์ควอด,,Camera / Dolly
+Out Quad,เอาต์ควอด,,Camera / Dolly
+In Quad,อินควอด,,Camera / Dolly
