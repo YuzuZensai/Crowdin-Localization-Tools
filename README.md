@@ -35,8 +35,8 @@ The tool supports both remote and local CSV files:
 
 The CSV file should follow this format:
 ```csv
-Source,Target,Note
-"Original text","Translated text","Optional note"
+Source,Target,Note,Category
+"Original text","Translated text","Optional note","Category"
 ```
 
 ## Updates
