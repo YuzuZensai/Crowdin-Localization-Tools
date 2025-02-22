@@ -42,7 +42,56 @@ const CONFIG = {
   sourceStringContainer: "#source_phrase_container",
 
   autoSearchInterval: 1000,
-  fuzzyThreshold: 0.7,
+
+  // Search thresholds and scoring configuration
+  thresholds: {
+    fuzzy: 0.7, // Base fuzzy matching threshold
+    wordOverlap: 0.5, // Word overlap threshold for longer phrases
+
+    // Word normalization settings
+    normalization: {
+      stripChars: /[.,!?;:'")\]}/\\]/g, // Remove these characters when normalizing words
+      maxCharDiff: 2, // Maximum allowed character difference for similar words
+      minWordLength: 4, // Minimum word length to apply fuzzy matching
+      minVariationSimilarity: 0.75, // Minimum similarity for word variations
+      wordEndings: ["s", "es", "ed", "ing", "'s"], // Common word endings to normalize
+    },
+
+    // Base scores
+    scores: {
+      exactMatch: 1.0,
+      exactWordMatch: 0.9,
+      contextBaseScore: 0.6,
+      singularPluralMatch: 0.95,
+      singularPluralContext: 0.85,
+      partialMatchBase: 0.6,
+      wordVariationMatch: 0.85,
+    },
+
+    // Multipliers and penalties
+    multipliers: {
+      autoSearchThreshold: 0.95,
+      singleWordThreshold: 1.4,
+      baseThresholdIncrease: 1.1,
+      positionPenalty: 1.5,
+      lengthDiffPenalty: 0.2,
+      minLengthPenaltyScore: 0.3,
+    },
+
+    // Weights for different scoring components
+    weights: {
+      fuzzyMatchWeight: 0.2,
+      wordOverlapWeight: 0.8,
+      positionMatchWeight: 0.4,
+      positionOverlapWeight: 0.6,
+    },
+
+    // Cache limits
+    cacheLimits: {
+      similarity: 10000,
+      combinations: 1000,
+    },
+  },
 
   metadata: {
     version: "1.1.4",
@@ -150,6 +199,60 @@ function similarity(s1, s2) {
   if (s1.length === 0 || s2.length === 0) return 0;
   const longerLength = Math.max(s1.length, s2.length);
   return (longerLength - levenshteinDistance(s1, s2)) / longerLength;
+}
+
+function normalizeWord(word) {
+  // Remove specified characters
+  word = word
+    .toLowerCase()
+    .replace(CONFIG.thresholds.normalization.stripChars, "");
+
+  // Remove common word endings
+  for (const ending of CONFIG.thresholds.normalization.wordEndings) {
+    if (word.endsWith(ending)) {
+      word = word.slice(0, -ending.length);
+      break;
+    }
+  }
+
+  return word;
+}
+
+// Cache for word combinations and similarity scores
+const combinationsCache = new Map();
+const similarityCache = new Map();
+
+function getCachedSimilarity(str1, str2) {
+  const key = `${str1}|${str2}`;
+  if (similarityCache.has(key)) {
+    return similarityCache.get(key);
+  }
+  const score = similarity(str1, str2);
+  similarityCache.set(key, score);
+  return score;
+}
+
+function areWordsSimilar(word1, word2) {
+  const norm1 = normalizeWord(word1);
+  const norm2 = normalizeWord(word2);
+
+  // If words are too short, require exact match
+  if (
+    norm1.length < CONFIG.thresholds.normalization.minWordLength ||
+    norm2.length < CONFIG.thresholds.normalization.minWordLength
+  ) {
+    return norm1 === norm2;
+  }
+
+  // Check character difference
+  const charDiff = Math.abs(norm1.length - norm2.length);
+  if (charDiff > CONFIG.thresholds.normalization.maxCharDiff) {
+    return false;
+  }
+
+  // Calculate similarity
+  const similarity = getCachedSimilarity(norm1, norm2);
+  return similarity >= CONFIG.thresholds.normalization.minVariationSimilarity;
 }
 
 function TranslatorTool() {
@@ -865,7 +968,12 @@ function TranslatorTool() {
     log("info", "Setting up event listeners");
     // Debounce the search with 300ms delay
     const debouncedSearch = debounce(() => {
-      searchTranslations();
+      if (!searchInput.value.trim()) {
+        // If textbox is cleared, force a search of the editor content
+        checkForEditorContent(true);
+      } else {
+        searchTranslations(searchInput.value, false);
+      }
     }, 300);
 
     searchInput.addEventListener("input", function () {
@@ -987,6 +1095,7 @@ function TranslatorTool() {
             terms: content.terms,
             stringId: content.stringId,
             length: content.fullText.length,
+            lastSearchedText: lastSearchedText,
           });
           findMatches(content.fullText);
         }
@@ -1298,10 +1407,6 @@ function TranslatorTool() {
     };
   }
 
-  // Cache for word combinations
-  const combinationsCache = new Map();
-  const similarityCache = new Map();
-
   function getCachedCombinations(text) {
     if (combinationsCache.has(text)) {
       return combinationsCache.get(text);
@@ -1343,237 +1448,310 @@ function TranslatorTool() {
     return combinations;
   }
 
-  function getCachedSimilarity(str1, str2) {
-    const key = `${str1}|${str2}`;
-    if (similarityCache.has(key)) {
-      return similarityCache.get(key);
+  function searchTranslations(text, isAutoSearch = false) {
+    if (!text || !translationData.length) {
+      updateResults("");
+      lastSearchedText = "";
+      return;
     }
-    const score = similarity(str1, str2);
-    similarityCache.set(key, score);
-    return score;
-  }
 
-  function findMatches(text) {
-    if (!text || !translationData.length) return;
-
-    log("debug", "Finding matches for text:", {
-      text: text,
-      wordCount: text.split(/\s+/).filter((w) => w.length > 0).length,
-    });
-
-    const matches = [];
-    const seenCombinations = new Set();
-    const combinations = getCachedCombinations(text);
-
-    log("debug", "Generated combinations:", combinations);
-
-    // Pre-calculate source combinations for each entry
-    const entryCombinations = new Map();
-    translationData.forEach((entry) => {
-      entryCombinations.set(entry, getCachedCombinations(entry.source));
-    });
-
-    combinations.forEach(function (combination) {
-      if (!combination) return;
-
-      const combinationLower = combination.toLowerCase();
-
-      // Early exit if we already have enough high-quality matches
-      if (matches.length > 20 && matches[19].score > 0.9) {
-        return;
+    // For manual search
+    let searchText = text;
+    if (!isAutoSearch) {
+      const editorTextbox = document.querySelector(CONFIG.textboxSelector);
+      if (editorTextbox && editorTextbox.value.trim()) {
+        searchText = editorTextbox.value;
       }
-
-      translationData.forEach(function (entry) {
-        const uniqueKey = `${entry.source.toLowerCase()}_${
-          entry.category || "default"
-        }`;
-        if (seenCombinations.has(uniqueKey)) return;
-
-        const entryLower = entry.source.toLowerCase();
-
-        // For exact matches (case-insensitive)
-        if (entryLower === combinationLower) {
-          seenCombinations.add(uniqueKey);
-          matches.push({
-            entry: entry,
-            score: 1,
-            matchedWord: combination,
-          });
-          return;
-        }
-
-        // Only proceed if the source is significant
-        if (!isSignificantPhrase(entry.source)) {
-          return;
-        }
-
-        // Get cached source combinations
-        const sourceCombinations = entryCombinations.get(entry);
-
-        // Find best matching combination
-        let bestScore = 0;
-        let bestMatch = "";
-        let bestSourceCombo = "";
-
-        for (const sourceCombo of sourceCombinations) {
-          const score = getCachedSimilarity(
-            sourceCombo.toLowerCase(),
-            combinationLower
-          );
-
-          // Early exit if score is too low
-          if (score < 0.8) continue;
-
-          const sourceWordCount = sourceCombo.split(/\s+/).length;
-          const combinationWordCount = combination.split(/\s+/).length;
-
-          let adjustedScore = score;
-
-          // Heavy penalties for mismatches
-          if (Math.abs(sourceWordCount - combinationWordCount) > 0) {
-            adjustedScore *= 0.4;
-          }
-
-          if (combinationWordCount === 1 && sourceWordCount > 1) {
-            adjustedScore *= 0.3;
-          }
-
-          // Exact word boundary match bonus
-          const isExactMatch = new RegExp(`\\b${combinationLower}\\b`).test(
-            sourceCombo.toLowerCase()
-          );
-          if (isExactMatch) {
-            adjustedScore *= 1.3;
-          }
-
-          if (adjustedScore > bestScore) {
-            bestScore = adjustedScore;
-            bestMatch = combination;
-            bestSourceCombo = sourceCombo;
-          }
-        }
-
-        // Stricter thresholds
-        let threshold = CONFIG.fuzzyThreshold * 1.2;
-
-        if (combination.split(/\s+/).length === 1) {
-          threshold *= 1.4;
-        }
-
-        if (bestScore >= threshold && !seenCombinations.has(uniqueKey)) {
-          seenCombinations.add(uniqueKey);
-          matches.push({
-            entry: entry,
-            score: bestScore,
-            matchedWord: bestMatch,
-          });
-        }
-      });
-    });
-
-    // Clear caches if they get too large
-    if (similarityCache.size > 10000) {
-      similarityCache.clear();
-    }
-    if (combinationsCache.size > 1000) {
-      combinationsCache.clear();
     }
 
-    // Sort matches by score first, then by category
-    matches.sort(function (a, b) {
-      const aWordCount = a.matchedWord.split(/\s+/).length;
-      const bWordCount = b.matchedWord.split(/\s+/).length;
-
-      if (Math.abs(b.score - a.score) < 0.05) {
-        if (aWordCount !== bWordCount) {
-          return bWordCount - aWordCount;
-        }
-        if (!!a.entry.category !== !!b.entry.category) {
-          return a.entry.category ? -1 : 1;
-        }
-        return b.matchedWord.length - a.matchedWord.length;
-      }
-      return b.score - a.score;
-    });
-
-    log(
-      "info",
-      "Final matches:",
-      matches.map((match) => ({
-        source: match.entry.source,
-        matchedWord: match.matchedWord,
-        score: Math.round(match.score * 100) + "%",
-        category: match.entry.category || "none",
-      }))
-    );
-
-    displayFuzzyMatches(matches);
-  }
-
-  function searchTranslations() {
-    var query = searchInput.value.toLowerCase().trim();
-    if (!query || query.length <= 1) {
+    const query = searchText.toLowerCase().trim();
+    if (!isAutoSearch && query.length <= 1) {
       updateResults("");
       lastSearchedText = "";
       checkForEditorContent(true);
       return;
     }
 
-    log("info", "Searching translations for", { query: query });
-    var matches = [];
+    log(
+      "info",
+      `${isAutoSearch ? "Auto" : "Manual"} searching translations for`,
+      {
+        query: query,
+        originalText: text,
+        editorText: !isAutoSearch ? searchText : undefined,
+        isAutoSearch: isAutoSearch,
+      }
+    );
 
-    // Find matches
-    translationData.forEach(function (entry) {
-      let score = 0;
+    const matches = [];
+    const seenEntries = new Set();
 
-      // For short queries (2-3 chars), use stricter matching
-      if (query.length <= 3) {
-        // Only match if it's a complete word match or surrounded by word boundaries
-        const regex = new RegExp(`\\b${query}\\b`, "i");
-        if (
-          regex.test(entry.source) ||
-          regex.test(entry.target) ||
-          (entry.note && regex.test(entry.note))
-        ) {
-          score = 1;
+    // For auto-search or long queries, break down into significant phrases
+    const searchPhrases = [];
+    if (isAutoSearch || query.split(/\s+/).length > 3) {
+      // Get word combinations for better partial matching
+      searchPhrases.push(...getCachedCombinations(query));
+    } else {
+      searchPhrases.push(query);
+    }
+
+    // Remove duplicates and empty phrases
+    const uniquePhrases = [...new Set(searchPhrases)].filter(
+      (phrase) => phrase && phrase.length > 2
+    );
+
+    log("debug", "Searching with phrases:", uniquePhrases);
+
+    translationData.forEach((entry) => {
+      const entryKey = `${entry.source}_${entry.category || ""}`;
+      if (seenEntries.has(entryKey)) return;
+
+      let bestScore = 0;
+      let bestPhrase = "";
+
+      // Try each search phrase against the entry
+      for (const searchPhrase of uniquePhrases) {
+        let score = 0;
+        const searchWords = searchPhrase.split(/\s+/);
+
+        // For single words or short phrases, use enhanced matching
+        if (searchWords.length === 1 || searchPhrase.length <= 3) {
+          const sourceWords = entry.source.toLowerCase().split(/\s+/);
+          const targetWords = entry.target.toLowerCase().split(/\s+/);
+
+          // Check for word variations and similarities
+          const hasVariationMatch = searchWords.some(
+            (searchWord) =>
+              sourceWords.some((sourceWord) =>
+                areWordsSimilar(searchWord, sourceWord)
+              ) ||
+              targetWords.some((targetWord) =>
+                areWordsSimilar(searchWord, targetWord)
+              )
+          );
+
+          if (hasVariationMatch) {
+            score = CONFIG.thresholds.scores.wordVariationMatch;
+
+            // Boost score for closer matches
+            const bestSourceMatch = Math.max(
+              ...sourceWords.map((w) =>
+                Math.max(
+                  ...searchWords.map((sw) =>
+                    getCachedSimilarity(normalizeWord(w), normalizeWord(sw))
+                  )
+                )
+              )
+            );
+            const bestTargetMatch = Math.max(
+              ...targetWords.map((w) =>
+                Math.max(
+                  ...searchWords.map((sw) =>
+                    getCachedSimilarity(normalizeWord(w), normalizeWord(sw))
+                  )
+                )
+              )
+            );
+
+            const bestMatch = Math.max(bestSourceMatch, bestTargetMatch);
+            score = Math.max(score, bestMatch);
+          }
+
+          // Exact matching
+          const regex = new RegExp(`\\b${searchPhrase}\\b`, "i");
+          if (regex.test(entry.source) || regex.test(entry.target)) {
+            score = Math.max(score, CONFIG.thresholds.scores.exactWordMatch);
+          }
+        } else {
+          // For longer phrases, use stricter matching
+          const sourceWords = entry.source.toLowerCase().split(/\s+/);
+          const targetWords = entry.target.toLowerCase().split(/\s+/);
+
+          // Calculate word overlap with stricter position consideration
+          const sourceOverlap = calculateOverlapScore(searchWords, sourceWords);
+          const targetOverlap = calculateOverlapScore(searchWords, targetWords);
+
+          // Only use fuzzy matching if there's significant word overlap
+          if (
+            Math.max(sourceOverlap, targetOverlap) >
+            CONFIG.thresholds.wordOverlap
+          ) {
+            const sourceScore = similarity(
+              entry.source.toLowerCase(),
+              searchPhrase
+            );
+            const targetScore = similarity(
+              entry.target.toLowerCase(),
+              searchPhrase
+            );
+
+            score = Math.max(sourceScore, targetScore);
+
+            // Weight the score using configured weights
+            const overlapWeight = Math.max(sourceOverlap, targetOverlap);
+            score =
+              score * CONFIG.thresholds.weights.fuzzyMatchWeight +
+              overlapWeight * CONFIG.thresholds.weights.wordOverlapWeight;
+          }
+
+          // Check for exact substring matches
+          const isExactMatch = entry.source.toLowerCase() === searchPhrase;
+          const isPartialMatch =
+            entry.source.toLowerCase().includes(searchPhrase) ||
+            entry.target.toLowerCase().includes(searchPhrase);
+
+          if (isExactMatch) {
+            score = CONFIG.thresholds.scores.exactMatch;
+          } else if (isPartialMatch) {
+            // Stricter scoring for partial matches
+            const matchRatio = searchPhrase.length / entry.source.length;
+            score = Math.max(
+              score,
+              Math.min(
+                CONFIG.thresholds.scores.singularPluralContext,
+                CONFIG.thresholds.scores.partialMatchBase + matchRatio * 0.25
+              )
+            );
+          }
+
+          // Length difference penalty
+          const lengthDiff = Math.abs(sourceWords.length - searchWords.length);
+          if (lengthDiff > 0) {
+            score *= Math.max(
+              CONFIG.thresholds.multipliers.minLengthPenaltyScore,
+              1 - lengthDiff * CONFIG.thresholds.multipliers.lengthDiffPenalty
+            );
+          }
         }
-      } else {
-        // For longer queries, use fuzzy match with context
-        const sourceScore = similarity(entry.source.toLowerCase(), query);
-        const targetScore = similarity(entry.target.toLowerCase(), query);
-        const noteScore = entry.note
-          ? similarity(entry.note.toLowerCase(), query)
-          : 0;
 
-        // Use the highest score
-        score = Math.max(sourceScore, targetScore, noteScore);
+        // Update best score if this phrase matched better
+        if (score > bestScore) {
+          bestScore = score;
+          bestPhrase = searchPhrase;
+        }
       }
 
-      // Score is good enough
+      // Apply thresholds
+      let threshold =
+        CONFIG.thresholds.fuzzy *
+        CONFIG.thresholds.multipliers.baseThresholdIncrease;
+      if (isAutoSearch) {
+        threshold *= CONFIG.thresholds.multipliers.autoSearchThreshold;
+      }
+
+      // Higher threshold for single-word matches in multi-word entries
       if (
-        (query.length <= 3 && score > 0) ||
-        (query.length > 3 && score >= CONFIG.fuzzyThreshold)
+        bestPhrase.split(/\s+/).length === 1 &&
+        entry.source.split(/\s+/).length > 1
       ) {
+        threshold *= CONFIG.thresholds.multipliers.singleWordThreshold;
+      }
+
+      if (bestScore >= threshold) {
+        seenEntries.add(entryKey);
         matches.push({
-          entry: entry,
-          score: score,
+          entry,
+          score: bestScore,
+          matchedWord: bestPhrase || query,
         });
       }
     });
 
-    // Sort matches by score (highest first) and text length (longer matches first)
-    matches.sort(function (a, b) {
-      if (b.score === a.score) {
-        return b.entry.source.length - a.entry.source.length;
+    // Helper function to calculate overlap score with position matching
+    function calculateOverlapScore(searchWords, targetWords) {
+      let matchCount = 0;
+      let positionScore = 0;
+
+      for (let i = 0; i < searchWords.length; i++) {
+        const searchWord = searchWords[i];
+        const targetIndex = targetWords.indexOf(searchWord);
+
+        if (targetIndex !== -1) {
+          matchCount++;
+          const positionPenalty =
+            Math.abs(i - targetIndex) /
+            Math.max(searchWords.length, targetWords.length);
+          positionScore +=
+            1 - positionPenalty * CONFIG.thresholds.multipliers.positionPenalty;
+        }
       }
+
+      const matchRatio = matchCount / searchWords.length;
+      const avgPositionScore = matchCount > 0 ? positionScore / matchCount : 0;
+
+      return (
+        matchRatio * CONFIG.thresholds.weights.positionOverlapWeight +
+        avgPositionScore * CONFIG.thresholds.weights.positionMatchWeight
+      );
+    }
+
+    // Clear caches if they get too large
+    if (similarityCache.size > CONFIG.thresholds.cacheLimits.similarity)
+      similarityCache.clear();
+    if (combinationsCache.size > CONFIG.thresholds.cacheLimits.combinations)
+      combinationsCache.clear();
+
+    // Find all punctuation marks in the search phrase
+    const punctuationMarks = query.match(/[.,!?;:'")\]}/\\]/g) || [];
+    if (punctuationMarks.length > 0) {
+      // Add each punctuation mark as a separate search phrase
+      punctuationMarks.forEach((mark) => {
+        searchPhrases.push(mark);
+      });
+
+      // Find exact matches for punctuation marks
+      const exactMatches = translationData
+        .filter((entry) =>
+          punctuationMarks.some(
+            (mark) => entry.source.includes(mark) || entry.target.includes(mark)
+          )
+        )
+        .map((entry) => ({
+          entry,
+          score: 1.0,
+          matchedWord: query,
+        }));
+      matches.push(...exactMatches);
+    }
+
+    // Sort matches
+    matches.sort((a, b) => {
+      // First prioritize exact matches
+      if (a.score === 1 && b.score !== 1) return -1;
+      if (b.score === 1 && a.score !== 1) return 1;
+
+      // Then by match word count (prefer more complete matches)
+      const aWords = a.matchedWord.split(/\s+/).length;
+      const bWords = b.matchedWord.split(/\s+/).length;
+      if (aWords !== bWords) return bWords - aWords;
+
+      // Then by category presence
+      if (!!a.entry.category !== !!b.entry.category) {
+        return a.entry.category ? -1 : 1;
+      }
+
+      // Finally by score
       return b.score - a.score;
     });
 
     // Limit results for performance
-    matches = matches.slice(0, 50);
+    const limitedMatches = matches.slice(0, 50);
 
-    log("success", "Search found matches", { count: matches.length });
-    displayFuzzyMatches(matches);
+    log("success", "Search found matches", {
+      count: limitedMatches.length,
+      isAutoSearch,
+      matches: limitedMatches.map((m) => ({
+        source: m.entry.source,
+        score: Math.round(m.score * 100) + "%",
+        matchedWord: m.matchedWord,
+      })),
+    });
+
+    displayFuzzyMatches(limitedMatches);
+  }
+
+  function findMatches(text) {
+    searchTranslations(text, true);
   }
 
   function displayFuzzyMatches(matches) {
