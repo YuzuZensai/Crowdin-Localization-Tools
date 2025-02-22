@@ -2,6 +2,8 @@
 
 A userscript that enhances Crowdin's translation editor by providing cross reference from CSV-based translation suggestions.
 
+![image](https://github.com/user-attachments/assets/e8bbb18b-7e6e-4de8-aa4c-5ab35a510c4c)
+
 ## Installation
 
 1. First, install a userscript manager for your browser:
@@ -9,8 +11,8 @@ A userscript that enhances Crowdin's translation editor by providing cross refer
    - For Firefox: Install [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/)
    - For Edge: Install [Tampermonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)
 
-2. Click on this link to install the script:
-   [Install Crowdin Localization Tools](https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.user.js)
+2. Click on this link to install or update the script:
+   [Install/Update Crowdin Localization Tools](https://raw.githubusercontent.com/YuzuZensai/Crowdin-Localization-Tools/main/script.user.js)
 
 3. When prompted by your userscript manager, click "Install" or "OK" to complete the installation.
 
