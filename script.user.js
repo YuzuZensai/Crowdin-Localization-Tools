@@ -496,6 +496,50 @@ function TranslatorTool() {
     container.style.flexDirection = "column";
     container.style.fontFamily =
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+    container.style.minWidth = "400px";
+    container.style.minHeight = "300px";
+
+    // Resize handles
+    const handles = ["n", "e", "s", "w", "ne", "nw", "se", "sw"];
+    handles.forEach((dir) => {
+      const handle = document.createElement("div");
+      handle.className = `resize-handle resize-${dir}`;
+      handle.style.position = "absolute";
+      handle.style.zIndex = "10000";
+
+      switch (dir) {
+        case "n":
+        case "s":
+          handle.style.left = "0";
+          handle.style.right = "0";
+          handle.style.height = "6px";
+          handle.style.cursor = "ns-resize";
+          break;
+        case "e":
+        case "w":
+          handle.style.top = "0";
+          handle.style.bottom = "0";
+          handle.style.width = "6px";
+          handle.style.cursor = "ew-resize";
+          break;
+        case "ne":
+        case "nw":
+        case "se":
+        case "sw":
+          handle.style.width = "10px";
+          handle.style.height = "10px";
+          handle.style.cursor = `${dir}-resize`;
+          break;
+      }
+
+      // Position handles
+      if (dir.includes("n")) handle.style.top = "-3px";
+      if (dir.includes("s")) handle.style.bottom = "-3px";
+      if (dir.includes("e")) handle.style.right = "-3px";
+      if (dir.includes("w")) handle.style.left = "-3px";
+
+      container.appendChild(handle);
+    });
 
     // Header
     var header = document.createElement("div");
@@ -567,9 +611,93 @@ function TranslatorTool() {
     }
 
     setupDraggable(header);
+    setupResizable();
 
     log("success", "UI elements created successfully");
   }
+
+  function setupResizable() {
+    let isResizing = false;
+    let currentHandle = null;
+    let startX, startY, startWidth, startHeight, startLeft, startTop;
+
+    const handles = container.querySelectorAll(".resize-handle");
+
+    handles.forEach((handle) => {
+      handle.addEventListener("mousedown", (e) => {
+        isResizing = true;
+        currentHandle = handle;
+        startX = e.clientX;
+        startY = e.clientY;
+
+        const rect = container.getBoundingClientRect();
+        startWidth = rect.width;
+        startHeight = rect.height;
+        startLeft = rect.left;
+        startTop = rect.top;
+
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", stopResize);
+        e.preventDefault();
+        log("info", "Started resizing window");
+      });
+    });
+
+    function handleMouseMove(e) {
+      if (!isResizing) return;
+
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const rect = container.getBoundingClientRect();
+
+      // Enforce minimum dimensions
+      const minWidth = 400;
+      const minHeight = 300;
+
+      if (currentHandle.className.includes("e")) {
+        const newWidth = Math.max(startWidth + dx, minWidth);
+        container.style.width = `${newWidth}px`;
+      }
+      if (currentHandle.className.includes("s")) {
+        const newHeight = Math.max(startHeight + dy, minHeight);
+        container.style.height = `${newHeight}px`;
+      }
+      if (currentHandle.className.includes("w")) {
+        const newWidth = Math.max(startWidth - dx, minWidth);
+        if (newWidth !== rect.width) {
+          container.style.width = `${newWidth}px`;
+          container.style.left = `${startLeft + startWidth - newWidth}px`;
+        }
+      }
+      if (currentHandle.className.includes("n")) {
+        const newHeight = Math.max(startHeight - dy, minHeight);
+        if (newHeight !== rect.height) {
+          container.style.height = `${newHeight}px`;
+          container.style.top = `${startTop + startHeight - newHeight}px`;
+        }
+      }
+    }
+
+    function stopResize() {
+      if (isResizing) {
+        isResizing = false;
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", stopResize);
+        log("info", "Stopped resizing window");
+      }
+    }
+  }
+
+  GM_addStyle(`
+    .resize-handle {
+      background: transparent;
+      position: absolute;
+      transition: background-color 0.2s;
+    }
+    .resize-handle:hover {
+      background-color: rgba(26, 115, 232, 0.2);
+    }
+  `);
 
   function createTab(text, isActive) {
     var tab = document.createElement("button");
