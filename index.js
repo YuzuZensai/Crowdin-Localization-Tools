@@ -41,11 +41,9 @@ async function updateAPIMetadata() {
   console.log("Updating API Metadata...");
   try {
     const date = new Date();
-
-    const offsetedTime = new Date(date.getTime() + 7 * 60 * 60 * 1000);
-    const currentDate = offsetedTime
+    const currentDate = date
       .toLocaleString("en-US", {
-        timeZone: "Etc/GMT-7",
+        timeZone: "Asia/Bangkok",
         month: "2-digit",
         day: "2-digit",
         year: "numeric",
