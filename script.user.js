@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Crowdin Localization Tools
 // @namespace    https://yuzu.kirameki.cafe/
-// @version      1.2.0
+// @version      1.2.1
 // @description  A tool for translating Crowdin projects using a CSV file
 // @author       Yuzu (YuzuZensai)
 // @match        https://crowdin.com/editor/*
@@ -96,7 +96,7 @@ const CONFIG = {
   },
 
   metadata: {
-    version: "1.2.0",
+    version: "1.2.1",
     repository: "https://github.com/YuzuZensai/Crowdin-Localization-Tools",
     authorGithub: "https://github.com/YuzuZensai",
   },
