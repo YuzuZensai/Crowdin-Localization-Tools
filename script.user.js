@@ -50,7 +50,9 @@ const CONFIG = {
 
     // Word normalization settings
     normalization: {
-      stripChars: /[.,!?;:'")\]}/\\]/g, // Remove these characters when normalizing words
+      stripChars: /[.,!?;:'"()\[\]{}\\]/g, // Remove these characters when normalizing words
+      separatorChars: /[_-]+/g, // Characters to be replaced with spaces
+      separatorReplacement: " ", // What to replace separators with
       maxCharDiff: 2, // Maximum allowed character difference for similar words
       minWordLength: 4, // Minimum word length to apply fuzzy matching
       minVariationSimilarity: 0.75, // Minimum similarity for word variations
@@ -202,6 +204,12 @@ function similarity(s1, s2) {
 }
 
 function normalizeWord(word) {
+  // Replace separators with spaces first
+  word = word.replace(
+    CONFIG.thresholds.normalization.separatorChars,
+    CONFIG.thresholds.normalization.separatorReplacement
+  );
+
   // Remove specified characters
   word = word
     .toLowerCase()
@@ -1618,9 +1626,9 @@ function TranslatorTool() {
     const searchPhrases = [];
     if (isAutoSearch || query.split(/\s+/).length > 3) {
       // Get word combinations for better partial matching
-      searchPhrases.push(...getCachedCombinations(query));
+      searchPhrases.push(...getCachedCombinations(normalizeWord(query)));
     } else {
-      searchPhrases.push(query);
+      searchPhrases.push(normalizeWord(query));
     }
 
     // Remove duplicates and empty phrases
@@ -1827,19 +1835,33 @@ function TranslatorTool() {
         searchPhrases.push(mark);
       });
 
-      // Find exact matches for punctuation marks
-      const exactMatches = translationData
+      // Find matches for punctuation marks with a lower base score
+      const punctuationMatches = translationData
         .filter((entry) =>
           punctuationMarks.some(
             (mark) => entry.source.includes(mark) || entry.target.includes(mark)
           )
         )
-        .map((entry) => ({
-          entry,
-          score: 1.0,
-          matchedWord: query,
-        }));
-      matches.push(...exactMatches);
+        .map((entry) => {
+          // Calculate how many punctuation marks match
+          const matchCount = punctuationMarks.filter(
+            (mark) => entry.source.includes(mark) || entry.target.includes(mark)
+          ).length;
+          // Score based on proportion of matching punctuation
+          const score =
+            (matchCount / punctuationMarks.length) *
+            CONFIG.thresholds.scores.partialMatchBase;
+          return {
+            entry,
+            score,
+            matchedWord: query,
+          };
+        });
+
+      // Only add punctuation matches that meet the threshold
+      punctuationMatches
+        .filter((match) => match.score >= CONFIG.thresholds.fuzzy)
+        .forEach((match) => matches.push(match));
     }
 
     // Sort matches
