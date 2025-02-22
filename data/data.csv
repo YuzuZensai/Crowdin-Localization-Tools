@@ -1,8 +1,8 @@
 English,Thai,Note / Context (มีตรงไหนผิด/ไม่ Update กับใน Discord ก็ Comment ได้นะคะ),Category
-(x) are now disabled,ปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
-(x) are now enabled ,เปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
-(x) disabled,ปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
-(x) enabled,เปิด(x)แล้ว,Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
+Are now disabled,ปิด(x)แล้ว,(x) are now disabled / Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
+Are now enabled ,เปิด(x)แล้ว,(x) are now enabled / Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
+Disabled,ปิด(x)แล้ว,(x) disabled / Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
+Enabled,เปิด(x)แล้ว,(x) enabled / Alerts ที่ขึ้นตอนหลังการเปลี่ยนการตั้งค่า,UI
 Accessibility,การช่วยการเข้าถึง,,UI
 Action Menu,เมนูคำสั่ง,,UI
 AFK,AFK,,Common
@@ -30,7 +30,7 @@ Dismiss Notification,เพิกเฉยการแจ้งเตือน,,
 Drift,ดริฟท์,,
 Dynamic,ไดนามิก,,
 Dynamic Bone,ไดนามิกโบน,,Unity / 3D
-Earmuffs,ปิดเสียงรอบข้าง,Earmuffs mode,VRChat Specific
+Earmuffs,อุดเสียง,Earmuffs mode,VRChat Specific
 Email,อีเมล,,Common
 Emojis,อิโมจิ,"""อิโมจิ"" ref IOS",Common
 Error,เกิดข้อผิดพลาด,,Common
