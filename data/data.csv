@@ -225,3 +225,7 @@ In Cubic,อินคิวบิก,,Camera / Dolly
 In Out Quad,อินเอาต์ควอด,,Camera / Dolly
 Out Quad,เอาต์ควอด,,Camera / Dolly
 In Quad,อินควอด,,Camera / Dolly
+Anti-aliasing,การลบรอยหยัก,,Unity / 3D
+Multisample Anti-aliasing,การลบรอยหยักแบบหลายแซมเปิ้ล (MSAA),,Unity / 3D
+Capture,ถ่ายภาพ,,Common
+Eye Tracking,ระบบติดตามดวงตา,,
