@@ -23,6 +23,7 @@ Chat,แชท,,Common
 Chatbox,ช่องแชท, ,
 Click,คลิก,,Common
 Colliders,คอลไลเดอร์,,Unity / 3D
+,,,
 Debug,ดีบัก,ศัพท์ทางเทคนิค Dev,Common
 Decrease,ลด,,Common
 Default,ค่าเริ่มต้น,,Common
@@ -88,7 +89,7 @@ Persistence,ข้อมูลจัดเก็บ,,
 Photo,รูป,,Common
 Platforms,แพลตฟอร์ม,,
 Please,กรุณา,,Common
-Polygons,โพลิกอน,,Unity / 3D
+Polygons,โพลีกอน,,Unity / 3D
 Poor,แย่,,Avatar Performance Rank
 Portal,ประตูมิติ,,VRChat Specific
 Profile,โปรไฟล์,,
@@ -229,3 +230,4 @@ Anti-aliasing,การลบรอยหยัก,,Unity / 3D
 Multisample Anti-aliasing,การลบรอยหยักแบบหลายแซมเปิ้ล (MSAA),,Unity / 3D
 Capture,ถ่ายภาพ,,Common
 Eye Tracking,ระบบติดตามดวงตา,,
+Screen tearing,การฉีกขาดของภาพ,,
