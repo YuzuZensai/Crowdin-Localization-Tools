@@ -53,7 +53,7 @@ Group,กลุ่ม,,Instance Type
 Group Public,กลุ่มสาธารณะ,,Instance Type
 Group+,กลุ่ม+,,Instance Type
 Hang out,ไปสังสรรค์,,
-Haptics,การสัมผัส,,
+Haptics,การสั่นและสัมผัส,,
 Headset,เฮดเซ็ท,,
 Hello,สวัสดี,,Common
 Horizontal Adjust,การปรับแนวระนาบ,,
@@ -137,7 +137,7 @@ Quick Actions,การกระทำด่วน,,
 Triangles,ไทรแองเกิล,บริบทคล้าย Polygon เลยทับศัพท์ให้เหมือนกัน,Unity / 3D
 Double Click,คลิกสองครั้ง,,UI
 Confetti,พลุกระดาษ,,
-VRChat+,VRC+,Pending confirmation from VRChat,VRChat Specific
+VRChat+,VRC+,Guidelines from https://docs.vrchat.com/docs/suggesting-localization-changes,VRChat Specific
 Selfie Expression,แสดงสีหน้าด้วยเซลฟี่,,
 Finger Tracking,ระบบติดตามนิ้ว,,
 Face Tracking,ระบบติดตามใบหน้า,,
@@ -169,7 +169,7 @@ Trail,เทรล,,Unity / 3D
 Material,เมททีเรียล,,Unity / 3D
 Material Slots,ช่องเมททีเรียล,,Unity / 3D
 Something went wrong,เกิดข้อผิดพลาดบางประการ,When used without any explanation why the error happened,Common
-Print,พรินต์,,VRChat Specific
+Print,พรินต์,Pending confirmation / Mismatch on many accepted entry,VRChat Specific
 Theme,ธีม,,
 Sticker,สติ๊กเกอร์,,
 This user,ผู้ใช้รายนี้,,
@@ -185,7 +185,7 @@ Invite Request,ขอคำเชิญ,เมื่อขอให้คนท�
 Wallet,กระเป๋าเงิน,,
 Token,โทเค็น,,
 Subscription,"การสมัครสมาชิก, สิทธิการเป็นสมาชิก",Depends on context,
-Represent Group,,Pending vote,
+Represent Group,,Pending re-vote,
 Appear as,แสดงตัวเป็น,Use with trust rank,
 Layer,เลเยอร์,,Camera / Dolly
 Center Of The View,ตรงกลางของมุมมอง,"The Reticle Dot, for Desktop Client",
@@ -231,3 +231,4 @@ Multisample Anti-aliasing,การลบรอยหยักแบบหลา
 Capture,ถ่ายภาพ,,Common
 Eye Tracking,ระบบติดตามดวงตา,,
 Screen tearing,การฉีกขาดของภาพ,,
+Udon,Udon,,VRChat Specific
