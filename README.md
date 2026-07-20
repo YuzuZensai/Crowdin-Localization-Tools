@@ -1,4 +1,4 @@
-# Crowdin Localization Tools
+# 🌍 Crowdin Localization Tools
 
 A userscript that enhances Crowdin's translation editor by providing cross reference from CSV-based translation suggestions.
 
