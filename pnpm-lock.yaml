@@ -15,8 +15,8 @@ importers:
         specifier: ^18.0.9
         version: 18.0.9
       googleapis:
-        specifier: ^188.0.0
-        version: 188.0.0
+        specifier: ^189.0.0
+        version: 189.0.0
 
 packages:
 
@@ -111,8 +111,8 @@ packages:
     resolution: {integrity: sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g==}
     engines: {node: '>= 0.4'}
 
-  google-auth-library@11.3.2:
-    resolution: {integrity: sha512-rbm+5boOZzFvDFg2tvCGkgHtG+RrmDqCDi6voK+ILpoCDqGxxc5pcMH6WZzCQXGNqQqZcYJl5WNvb159rkriuA==}
+  google-auth-library@11.3.3:
+    resolution: {integrity: sha512-VxjQ5+zHeR4RcRi001qnT/6KRKy2CIjQ5I7/wFErvRqr0+setlRqjDOAzvjzWEzyvsWswZE6WMQJtS8OpeTqAQ==}
     engines: {node: '>=22'}
 
   google-logging-utils@2.1.1:
@@ -123,8 +123,8 @@ packages:
     resolution: {integrity: sha512-wtv/e7JYgmtpIPcSez2EFD/Wx49DPsRX2rj15D7hTwc7tDsP82dcwoX/I4+zE38mu6S9PcghizzzADLf+ZMunA==}
     engines: {node: '>=22'}
 
-  googleapis@188.0.0:
-    resolution: {integrity: sha512-dLGvMAlYOiemwYnhFoy1bDd+dnB6o8mGxnXhLCirAjAww8F/Qs59XY3EHm7p7RGENtDRTqyM7oV7DQ22V4BaOA==}
+  googleapis@189.0.0:
+    resolution: {integrity: sha512-TmFQmaLNcY/aaGNC9wZW9GvPueWB/fdNmt6eNFLKo5nrAxod4OAnvQNRxZuGO8iKObie5g3iLJloHQ8iiiIlvA==}
     engines: {node: '>=22.0.0'}
 
   gopd@1.2.0:
@@ -297,7 +297,7 @@ snapshots:
       dunder-proto: 1.0.1
       es-object-atoms: 1.1.2
 
-  google-auth-library@11.3.2:
+  google-auth-library@11.3.3:
     dependencies:
       base64-js: 1.5.1
       ecdsa-sig-formatter: 1.0.11
@@ -314,16 +314,16 @@ snapshots:
     dependencies:
       extend: 3.0.2
       gaxios: 8.3.2
-      google-auth-library: 11.3.2
+      google-auth-library: 11.3.3
       google-logging-utils: 2.1.1
       qs: 6.17.1
       url-template: 2.0.8
     transitivePeerDependencies:
       - supports-color
 
-  googleapis@188.0.0:
+  googleapis@189.0.0:
     dependencies:
-      google-auth-library: 11.3.2
+      google-auth-library: 11.3.3
       googleapis-common: 9.3.1
     transitivePeerDependencies:
       - supports-color
